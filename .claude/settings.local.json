@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//mnt/c/Users/2273129/source/repos/FootLog/fc-companion-v2/**)",
+      "Read(//mnt/c/Users/2273129/source/repos/FootLog/fc-companion-v2/frontend/**)",
+      "Read(//mnt/c/Users/2273129/source/repos/FootLog/fc-companion-v2/frontend/fc-companion-app/**)"
+    ]
+  }
+}

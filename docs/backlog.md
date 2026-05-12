@@ -6,8 +6,8 @@
 
 | # | Feature | Status | Prioridade |
 |---|---|---|---|
-| F01 | Setup inicial e infraestrutura | in-progress | critica |
-| F02 | Gerenciamento de saves | todo | critica |
+| F01 | Setup inicial e infraestrutura | done | critica |
+| F02 | Gerenciamento de saves | in-progress | critica |
 | F03 | Seed via API-Football | todo | critica |
 | F04 | Modulo de jogadores | todo | alta |
 | F05 | Modulo de clubes | todo | alta |
@@ -20,7 +20,7 @@
 ---
 
 ## F01 — Setup inicial e infraestrutura
-**Status**: in-progress
+**Status**: done
 **Prioridade**: critica
 
 ### Escopo DENTRO
@@ -39,17 +39,17 @@
 - Features de UI alem do shell
 
 ### Criterios de aceite
-- [ ] dotnet build sem erros
-- [ ] ng build sem erros
-- [ ] GET /api/v1/health retorna 200
-- [ ] Angular faz chamada ao backend e recebe resposta
-- [ ] Sidebar com links de navegacao
-- [ ] Migration InitialCreate aplicada no PostgreSQL
+- [x] dotnet build sem erros
+- [x] ng build sem erros
+- [x] GET /api/v1/health retorna 200
+- [x] Angular faz chamada ao backend e recebe resposta
+- [x] Sidebar com links de navegacao
+- [x] Migration InitialCreate aplicada no PostgreSQL
 
 ---
 
 ## F02 — Gerenciamento de saves
-**Status**: todo
+**Status**: in-progress
 **Prioridade**: critica
 
 ### Escopo DENTRO

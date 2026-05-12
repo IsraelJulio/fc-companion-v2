@@ -3,7 +3,70 @@
     "allow": [
       "Read(//mnt/c/Users/2273129/source/repos/FootLog/fc-companion-v2/**)",
       "Read(//mnt/c/Users/2273129/source/repos/FootLog/fc-companion-v2/frontend/**)",
-      "Read(//mnt/c/Users/2273129/source/repos/FootLog/fc-companion-v2/frontend/fc-companion-app/**)"
+      "Read(//mnt/c/Users/2273129/source/repos/FootLog/fc-companion-v2/frontend/fc-companion-app/**)",
+      "Bash(gh repo *)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:api.github.com)",
+      "Bash(mkdir -p __TRACKED_VAR__/.local/bin)",
+      "Bash(curl -fsSL \"https://github.com/rtk-ai/rtk/releases/download/v0.39.0/rtk-x86_64-pc-windows-msvc.zip\" -o /tmp/rtk.zip)",
+      "Bash(curl -fsSL --insecure \"https://github.com/rtk-ai/rtk/releases/download/v0.39.0/rtk-x86_64-pc-windows-msvc.zip\" -o /tmp/rtk.zip)",
+      "Bash(cd /tmp)",
+      "Bash(unzip -o rtk.zip -d rtk-extract)",
+      "Bash(cp /tmp/rtk-extract/rtk.exe \"$HOME/.local/bin/rtk.exe\" && echo \"Copiado para $HOME/.local/bin/rtk.exe\")",
+      "Bash(export PATH=\"$HOME/.local/bin:$PATH\")",
+      "Bash(rtk --version)",
+      "Bash(rtk init *)",
+      "Bash(rtk gain *)",
+      "Bash(gh api *)",
+      "Bash(npm --version)",
+      "Bash(rtk npx *)",
+      "Bash(npm install *)",
+      "Bash(uipro --version)",
+      "Bash(uipro init *)",
+      "Bash(cd \"C:/Users/2273129/.claude\" && uipro init --ai claude 2>&1)",
+      "Read(//c/Users/2273129/.claude/**)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(rtk ls *)",
+      "Bash(PATH=/c/Users/2273129/.local/bin:__TRACKED_VAR__ rtk --version)",
+      "Bash(PATH=/c/Users/2273129/.local/bin:__TRACKED_VAR__ rtk npx get-shit-done-cc@latest --claude --global)",
+      "Bash(rtk tree *)",
+      "Bash(rtk find *)"
+    ],
+    "additionalDirectories": [
+      "\\tmp\\rtk-extract"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/pre-commit-secrets.sh"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/post-edit-config-warn.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/post-edit-config-warn.sh"
+          }
+        ]
+      }
     ]
   }
 }

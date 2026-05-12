@@ -1,2 +1,6 @@
 import { Routes } from '@angular/router';
-export const SAVES_ROUTES: Routes = [{ path: '', children: [] }]; // TODO F02
+import { SavesListComponent } from './components/saves-list/saves-list.component';
+
+export const SAVES_ROUTES: Routes = [
+  { path: '', component: SavesListComponent }
+];

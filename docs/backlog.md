@@ -7,7 +7,7 @@
 | # | Feature | Status | Prioridade |
 |---|---|---|---|
 | F01 | Setup inicial e infraestrutura | done | critica |
-| F02 | Gerenciamento de saves | in-progress | critica |
+| F02 | Gerenciamento de saves | done | critica |
 | F03 | Seed via API-Football | todo | critica |
 | F04 | Modulo de jogadores | todo | alta |
 | F05 | Modulo de clubes | todo | alta |
@@ -64,12 +64,12 @@
 - Configuracao de ligas ao criar save (F03)
 
 ### Criterios de aceite
-- [ ] Criar save com nome e temporada inicial
-- [ ] Lista de saves na tela inicial
-- [ ] Selecionar save atualiza contexto global
-- [ ] Header mostra nome do save e temporada
-- [ ] Deletar save com confirmacao
-- [ ] Endpoints: POST /saves, GET /saves, DELETE /saves/{id}
+- [x] Criar save com nome e temporada inicial
+- [x] Lista de saves na tela inicial
+- [x] Selecionar save atualiza contexto global
+- [x] Header mostra nome do save e temporada
+- [x] Deletar save com confirmacao
+- [x] Endpoints: POST /saves, GET /saves, DELETE /saves/{id}
 
 ---
 

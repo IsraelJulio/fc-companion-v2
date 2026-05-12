@@ -1,0 +1,102 @@
+<div class="saves-page">
+  <div class="saves-header">
+    <h1 class="text-3xl font-bold m-0">Meus Saves</h1>
+    <p-button label="Novo Save" icon="pi pi-plus" (onClick)="openDialog()" />
+  </div>
+
+  @if (saves().length === 0) {
+    <div class="saves-empty">
+      <i class="pi pi-folder-open text-6xl text-400 mb-3"></i>
+      <p class="text-xl text-600 m-0">Nenhum save encontrado</p>
+      <p class="text-500 mt-1 mb-4">Crie seu primeiro save para começar!</p>
+      <p-button label="Criar Save" icon="pi pi-plus" (onClick)="openDialog()" />
+    </div>
+  } @else {
+    <div class="saves-grid">
+      @for (save of saves(); track save.id) {
+        <p-card [styleClass]="'save-card' + (isActive(save.id) ? ' save-card--active' : '')">
+          <ng-template pTemplate="header">
+            <div class="save-card-header">
+              <span class="text-lg font-semibold">{{ save.name }}</span>
+              @if (save.currentSeason) {
+                <p-tag [value]="save.currentSeason.name" severity="info" />
+              }
+            </div>
+          </ng-template>
+
+          <p class="text-500 text-sm m-0">
+            Criado em {{ save.createdAt | date:'dd/MM/yyyy' }}
+          </p>
+
+          <ng-template pTemplate="footer">
+            <div class="save-card-actions">
+              <p-button
+                [label]="isActive(save.id) ? 'Ativo' : 'Selecionar'"
+                [outlined]="isActive(save.id)"
+                [icon]="isActive(save.id) ? 'pi pi-check' : 'pi pi-play'"
+                styleClass="flex-1"
+                (onClick)="selectSave(save)"
+              />
+              <p-button
+                icon="pi pi-trash"
+                severity="danger"
+                [text]="true"
+                [loading]="deleting() === save.id"
+                (onClick)="confirmDelete(save)"
+              />
+            </div>
+          </ng-template>
+        </p-card>
+      }
+    </div>
+  }
+</div>
+
+<p-dialog
+  [visible]="showDialog()"
+  (visibleChange)="showDialog.set($event)"
+  header="Novo Save"
+  [modal]="true"
+  [style]="{ width: '28rem' }"
+  [closable]="!creating()"
+>
+  <div class="dialog-form">
+    <div class="field">
+      <label for="saveName">Nome do save</label>
+      <input
+        id="saveName"
+        pInputText
+        [ngModel]="newName()"
+        (ngModelChange)="newName.set($event)"
+        placeholder="Ex: Carreira Principal"
+      />
+    </div>
+    <div class="field">
+      <label for="seasonName">Temporada inicial</label>
+      <input
+        id="seasonName"
+        pInputText
+        [ngModel]="newSeason()"
+        (ngModelChange)="newSeason.set($event)"
+        placeholder="Ex: 2025/26"
+      />
+    </div>
+  </div>
+  <ng-template pTemplate="footer">
+    <p-button
+      label="Cancelar"
+      [outlined]="true"
+      [disabled]="creating()"
+      (onClick)="showDialog.set(false)"
+    />
+    <p-button
+      label="Criar"
+      [loading]="creating()"
+      [disabled]="!newName().trim() || !newSeason().trim()"
+      (onClick)="createSave()"
+    />
+  </ng-template>
+</p-dialog>
+
+<p-confirmDialog />
+<p-toast />

@@ -30,7 +30,13 @@
       "Bash(PATH=/c/Users/2273129/.local/bin:__TRACKED_VAR__ rtk --version)",
       "Bash(PATH=/c/Users/2273129/.local/bin:__TRACKED_VAR__ rtk npx get-shit-done-cc@latest --claude --global)",
       "Bash(rtk tree *)",
-      "Bash(rtk find *)"
+      "Bash(rtk find *)",
+      "Bash(rtk dotnet *)",
+      "Bash(\"/c/Program Files/dotnet/dotnet.exe\" build)",
+      "Bash(\"/c/Program Files/dotnet/dotnet.exe\" build FcCompanion.Application --no-incremental)",
+      "Bash(\"/c/Program Files/dotnet/dotnet.exe\" build FcCompanion.Infrastructure --no-incremental)",
+      "Bash(rtk tsc *)",
+      "Bash(/c/Users/2273129/AppData/Roaming/nvm/v18.20.3/node.exe *)"
     ],
     "additionalDirectories": [
       "\\tmp\\rtk-extract"

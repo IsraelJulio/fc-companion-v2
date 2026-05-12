@@ -116,3 +116,12 @@ export interface PagedResult<T> {
   page: number;
   pageSize: number;
 }
+
+export interface CloseSeasonRequest {
+  nextSeasonName: string;
+}
+
+export interface CloseSeasonResponse {
+  closedSeason: SeasonDto;
+  newSeason: SeasonDto;
+}

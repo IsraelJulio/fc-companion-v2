@@ -1,10 +1,30 @@
+using AutoMapper;
+using FcCompanion.Application.Interfaces;
+using FcCompanion.Application.Mappings;
+using FcCompanion.Application.UseCases.Saves;
+using FcCompanion.Application.UseCases.Seasons;
 using FcCompanion.Infrastructure.Persistence;
+using FcCompanion.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+var mapperConfig = new MapperConfiguration(cfg => cfg.AddMaps(typeof(SaveMappingProfile).Assembly));
+builder.Services.AddSingleton<IMapper>(mapperConfig.CreateMapper());
+
+// Saves (F02)
+builder.Services.AddScoped<ISaveRepository, SaveRepository>();
+builder.Services.AddScoped<GetAllSavesUseCase>();
+builder.Services.AddScoped<CreateSaveUseCase>();
+builder.Services.AddScoped<DeleteSaveUseCase>();
+
+// Seasons (F02/F09)
+builder.Services.AddScoped<ISeasonRepository, SeasonRepository>();
+builder.Services.AddScoped<CloseSeasonUseCase>();
 
 builder.Services.AddCors(options =>
     options.AddPolicy("Angular", policy =>
@@ -12,13 +32,11 @@ builder.Services.AddCors(options =>
               .AllowAnyMethod()
               .AllowAnyHeader()));
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(o => o.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new() { Title = "FC Companion API", Version = "v1" }));
-
-// TODO F01: registrar repositorios
-// builder.Services.AddScoped<ISaveRepository, SaveRepository>();
 
 var app = builder.Build();
 

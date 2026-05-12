@@ -8,7 +8,7 @@
 |---|---|---|---|
 | F01 | Setup inicial e infraestrutura | done | critica |
 | F02 | Gerenciamento de saves | done | critica |
-| F03 | Seed via API-Football | todo | critica |
+| F03 | Seed via API-Football | in-progress | critica |
 | F04 | Modulo de jogadores | todo | alta |
 | F05 | Modulo de clubes | todo | alta |
 | F06 | Transferencias | todo | alta |
@@ -49,7 +49,7 @@
 ---
 
 ## F02 — Gerenciamento de saves
-**Status**: in-progress
+**Status**: done
 **Prioridade**: critica
 
 ### Escopo DENTRO
@@ -74,7 +74,7 @@
 ---
 
 ## F03 — Seed via API-Football
-**Status**: todo
+**Status**: in-progress
 **Prioridade**: critica
 
 ### Escopo DENTRO

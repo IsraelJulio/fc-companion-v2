@@ -56,3 +56,15 @@ public interface IStandingRepository : IRepository<Standing>
 {
     Task<IEnumerable<Standing>> GetBySeasonAndLeagueAsync(Guid seasonId, string? league);
 }
+
+public interface ISeedRepository
+{
+    Task<Dictionary<int, Guid>> GetExistingClubMappingsAsync(Guid saveId);
+    Task<HashSet<int>> GetExistingPlayerExternalIdsAsync(Guid saveId);
+    Task<HashSet<(Guid ClubId, string Competition, int Year)>> GetExistingTitleKeysAsync(Guid saveId);
+    Task AddRangeAsync(
+        IEnumerable<Club> clubs,
+        IEnumerable<Player> players,
+        IEnumerable<PlayerOverallHistory> histories,
+        IEnumerable<Title> titles);
+}

@@ -21,7 +21,8 @@ DELETE /saves/{id}
 
 ## Seed (F03)
 POST /saves/{saveId}/seed    body: { leagueIds: [39,140,135,78,61,2] }
-GET  /saves/{saveId}/seed/{jobId}
+Response 200: { clubsImported, playersImported, titlesImported }
+Response 400: { error } — se API indisponivel, retorna save vazio com aviso
 
 ## Players (F04)
 GET  /saves/{saveId}/players          ?clubId=&league=&position=&search=&page=&pageSize=

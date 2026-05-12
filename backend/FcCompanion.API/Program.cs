@@ -3,6 +3,8 @@ using FcCompanion.Application.Interfaces;
 using FcCompanion.Application.Mappings;
 using FcCompanion.Application.UseCases.Saves;
 using FcCompanion.Application.UseCases.Seasons;
+using FcCompanion.Application.UseCases.Seed;
+using FcCompanion.Infrastructure.ExternalApis;
 using FcCompanion.Infrastructure.Persistence;
 using FcCompanion.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +27,15 @@ builder.Services.AddScoped<DeleteSaveUseCase>();
 // Seasons (F02/F09)
 builder.Services.AddScoped<ISeasonRepository, SeasonRepository>();
 builder.Services.AddScoped<CloseSeasonUseCase>();
+
+// Seed (F03)
+builder.Services.AddHttpClient<IFootballApiService, FootballApiClient>(client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["ApiFootball:BaseUrl"]!);
+    client.DefaultRequestHeaders.Add("x-rapidapi-key", builder.Configuration["ApiFootball:Key"]!);
+});
+builder.Services.AddScoped<ISeedRepository, SeedRepository>();
+builder.Services.AddScoped<SeedSaveUseCase>();
 
 builder.Services.AddCors(options =>
     options.AddPolicy("Angular", policy =>

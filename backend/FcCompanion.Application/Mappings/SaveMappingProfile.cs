@@ -9,9 +9,13 @@ public class SaveMappingProfile : Profile
     public SaveMappingProfile()
     {
         CreateMap<Season, SeasonDto>()
-            .ForMember(d => d.Status, o => o.MapFrom(s => s.Status.ToString().ToLower()));
+            .ConstructUsing(src => new SeasonDto(src.Id, src.Name, src.Status.ToString().ToLower()));
 
         CreateMap<Save, SaveDto>()
-            .ForMember(d => d.CurrentSeason, o => o.MapFrom(s => s.Seasons.FirstOrDefault()));
+            .ConstructUsing((src, ctx) => new SaveDto(
+                src.Id,
+                src.Name,
+                src.Seasons.Any() ? ctx.Mapper.Map<SeasonDto>(src.Seasons.First()) : null,
+                src.CreatedAt));
     }
 }

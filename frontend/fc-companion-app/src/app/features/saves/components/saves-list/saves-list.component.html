@@ -55,46 +55,94 @@
 <p-dialog
   [visible]="showDialog()"
   (visibleChange)="showDialog.set($event)"
-  header="Novo Save"
+  [header]="dialogHeader()"
   [modal]="true"
-  [style]="{ width: '28rem' }"
-  [closable]="!creating()"
+  [style]="{ width: dialogWidth() }"
+  [closable]="dialogStep() !== 2"
 >
-  <div class="dialog-form">
-    <div class="field">
-      <label for="saveName">Nome do save</label>
-      <input
-        id="saveName"
-        pInputText
-        [ngModel]="newName()"
-        (ngModelChange)="newName.set($event)"
-        placeholder="Ex: Carreira Principal"
-      />
+  @if (dialogStep() === 0) {
+    <div class="dialog-form">
+      <div class="field">
+        <label for="saveName">Nome do save</label>
+        <input
+          id="saveName"
+          pInputText
+          [ngModel]="newName()"
+          (ngModelChange)="newName.set($event)"
+          placeholder="Ex: Carreira Principal"
+        />
+      </div>
+      <div class="field">
+        <label for="seasonName">Temporada inicial</label>
+        <input
+          id="seasonName"
+          pInputText
+          [ngModel]="newSeason()"
+          (ngModelChange)="newSeason.set($event)"
+          placeholder="Ex: 2025/26"
+        />
+      </div>
     </div>
-    <div class="field">
-      <label for="seasonName">Temporada inicial</label>
-      <input
-        id="seasonName"
-        pInputText
-        [ngModel]="newSeason()"
-        (ngModelChange)="newSeason.set($event)"
-        placeholder="Ex: 2025/26"
-      />
+  }
+
+  @if (dialogStep() === 1) {
+    <div class="dialog-league-step">
+      <p class="league-hint text-500 text-sm mt-0 mb-3">
+        Selecione as ligas para importar clubes, jogadores e títulos históricos.
+      </p>
+      <div class="league-grid">
+        @for (league of LEAGUES; track league.id) {
+          <div
+            class="league-card"
+            [class.league-card--selected]="isLeagueSelected(league.id)"
+            (click)="toggleLeague(league.id)"
+          >
+            <div class="league-abbr">{{ league.abbr }}</div>
+            <span class="league-name">{{ league.name }}</span>
+            <span class="league-country">{{ league.country }}</span>
+            @if (isLeagueSelected(league.id)) {
+              <i class="pi pi-check-circle league-check"></i>
+            }
+          </div>
+        }
+      </div>
+      @if (selectedLeagueIds().length === 0) {
+        <p class="league-warn text-sm mt-2 mb-0">
+          <i class="pi pi-info-circle mr-1"></i>
+          Nenhuma liga selecionada — save criado sem dados importados.
+        </p>
+      }
     </div>
-  </div>
+  }
+
+  @if (dialogStep() === 2) {
+    <div class="seed-progress">
+      <p class="text-600 mb-3">Importando dados das ligas selecionadas. Aguarde...</p>
+      <p-progressBar mode="indeterminate" />
+      <p class="text-400 text-sm mt-3 mb-0">Isso pode levar alguns segundos.</p>
+    </div>
+  }
+
   <ng-template pTemplate="footer">
-    <p-button
-      label="Cancelar"
-      [outlined]="true"
-      [disabled]="creating()"
-      (onClick)="showDialog.set(false)"
-    />
-    <p-button
-      label="Criar"
-      [loading]="creating()"
-      [disabled]="!newName().trim() || !newSeason().trim()"
-      (onClick)="createSave()"
-    />
+    @if (dialogStep() === 0) {
+      <p-button label="Cancelar" [outlined]="true" (onClick)="showDialog.set(false)" />
+      <p-button
+        label="Próximo"
+        icon="pi pi-arrow-right"
+        iconPos="right"
+        [disabled]="!step0Valid()"
+        (onClick)="nextStep()"
+      />
+    }
+    @if (dialogStep() === 1) {
+      <p-button label="Voltar" icon="pi pi-arrow-left" [outlined]="true" (onClick)="prevStep()" />
+      <p-button
+        label="Criar Save"
+        icon="pi pi-check"
+        [loading]="creating()"
+        (onClick)="createSave()"
+      />
+    }
   </ng-template>
 </p-dialog>
 

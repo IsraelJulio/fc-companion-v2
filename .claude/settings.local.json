@@ -36,7 +36,9 @@
       "Bash(\"/c/Program Files/dotnet/dotnet.exe\" build FcCompanion.Application --no-incremental)",
       "Bash(\"/c/Program Files/dotnet/dotnet.exe\" build FcCompanion.Infrastructure --no-incremental)",
       "Bash(rtk tsc *)",
-      "Bash(/c/Users/2273129/AppData/Roaming/nvm/v18.20.3/node.exe *)"
+      "Bash(/c/Users/2273129/AppData/Roaming/nvm/v18.20.3/node.exe *)",
+      "Bash(node node_modules/@angular/cli/bin/ng.js build --configuration development)",
+      "Bash(\"/c/Program Files/nodejs/node.exe\" \"C:\\\\Users\\\\2273129\\\\source\\\\repos\\\\FootLog\\\\fc-companion-v2\\\\frontend\\\\fc-companion-app\\\\node_modules\\\\@angular\\\\cli\\\\bin\\\\ng.js\" build --configuration development)"
     ],
     "additionalDirectories": [
       "\\tmp\\rtk-extract"

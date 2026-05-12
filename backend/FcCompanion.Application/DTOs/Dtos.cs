@@ -50,6 +50,9 @@ public record StandingDto(
 public record UpdateStandingRequest(
     int Position, int Points, int Wins, int Draws, int Losses, int GoalsFor, int GoalsAgainst);
 
+public record SeedRequest(IEnumerable<int> LeagueIds);
+public record SeedResultDto(int ClubsImported, int PlayersImported, int TitlesImported);
+
 public record CloseSeasonRequest(string NextSeasonName);
 public record CloseSeasonResponse(SeasonDto ClosedSeason, SeasonDto NewSeason);
 

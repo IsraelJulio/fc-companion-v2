@@ -78,3 +78,95 @@
     }
   }
 }
+
+/* League selection step */
+.dialog-league-step {
+  padding-top: 0.25rem;
+}
+
+.league-hint {
+  line-height: 1.4;
+}
+
+.league-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+.league-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  padding: 1rem 0.75rem;
+  border: 2px solid var(--surface-border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  position: relative;
+  text-align: center;
+  user-select: none;
+
+  &:hover {
+    border-color: var(--primary-color);
+    background: var(--surface-hover);
+  }
+
+  &--selected {
+    border-color: var(--primary-color);
+    background: color-mix(in srgb, var(--primary-color) 8%, transparent);
+  }
+}
+
+.league-abbr {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  background: var(--primary-color);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+}
+
+.league-name {
+  font-weight: 600;
+  font-size: 0.8rem;
+  color: var(--text-color);
+  line-height: 1.2;
+}
+
+.league-country {
+  color: var(--text-color-secondary);
+  font-size: 0.7rem;
+}
+
+.league-check {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.45rem;
+  color: var(--primary-color);
+  font-size: 0.9rem;
+}
+
+.league-warn {
+  color: var(--yellow-600);
+}
+
+/* Seeding progress step */
+.seed-progress {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem 0 0.5rem;
+  text-align: center;
+
+  p-progressBar {
+    width: 100%;
+  }
+}

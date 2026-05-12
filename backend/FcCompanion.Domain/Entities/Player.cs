@@ -14,7 +14,6 @@ public class Player : BaseEntity
     public string Position { get; set; } = string.Empty;
     public string PreferredFoot { get; set; } = "right";
     public int Overall { get; set; } = 75;
-    public int? OverallBase { get; set; }
     public string? PhotoUrl { get; set; }
     public long? MarketValue { get; set; }
     public bool IsCustom { get; set; } = false;

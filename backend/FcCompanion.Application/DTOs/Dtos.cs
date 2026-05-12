@@ -20,7 +20,7 @@ public record PlayerListItemDto(
 public record PlayerDetailDto(
     Guid Id, string FirstName, string LastName, string? Nationality,
     DateOnly? DateOfBirth, string Position, string PreferredFoot,
-    int Overall, int? OverallBase, string? PhotoUrl, long? MarketValue,
+    int Overall, string? PhotoUrl, long? MarketValue,
     bool IsCustom, ClubSummaryDto? CurrentClub,
     IEnumerable<PlayerSeasonStatsDto> SeasonHistory);
 public record CreatePlayerRequest(

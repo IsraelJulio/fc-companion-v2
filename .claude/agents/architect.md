@@ -35,7 +35,7 @@ API             ← depende de Application e Infrastructure; expõe HTTP
 |---|---|
 | ADR-001 | Save como unidade de isolamento — todos os dados scoped por SaveId |
 | ADR-002 | APIs externas usadas apenas no seed — nunca em consultas normais |
-| ADR-003 | Overall com dois campos: `OverallBase` (importado) + `Overall` (editável) |
+| ADR-003 | Overall único editável pelo usuário — sem dependência de FUTDB |
 | ADR-004 | Temporadas explícitas com status enum (Active/Closed) |
 | ADR-005 | Signals como estado primário no frontend — sem NgRx |
 

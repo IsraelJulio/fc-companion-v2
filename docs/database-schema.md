@@ -55,8 +55,7 @@
 | date_of_birth | DATE | |
 | position | VARCHAR(20) | GK CB LB RB CDM CM CAM LW RW ST |
 | preferred_foot | VARCHAR(10) | right left both |
-| overall | INTEGER | editavel |
-| overall_base | INTEGER | FUTDB imutavel |
+| overall | INTEGER | editavel pelo usuario |
 | photo_url | VARCHAR(500) | |
 | market_value | BIGINT | euros |
 | is_custom | BOOLEAN | |

@@ -8,7 +8,7 @@ PrimeNG                Clean Arch       (local)
 Chart.js               EF Core
                             |
                        APIs Externas (seed apenas)
-                       API-Football / FUTDB
+                       API-Football
 ```
 
 ## Decisões arquiteturais
@@ -21,8 +21,8 @@ Permite múltiplos saves independentes sem conflito de dados.
 Após o seed inicial, o save é independente das APIs.
 Dados editados manualmente não são sobrescritos.
 
-### ADR-003: Overall com dois campos
-overall_base (imutável, FUTDB) e overall (editável pelo usuário).
+### ADR-003: Overall único e editável
+Um único campo overall editável pelo usuário. Sem dependência de FUTDB.
 
 ### ADR-004: Temporadas como entidade explícita
 Season tem status active/closed para controle de virada.

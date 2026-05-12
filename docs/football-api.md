@@ -1,4 +1,4 @@
-# Guia de Integracao — API-Football e FUTDB
+# Guia de Integracao — API-Football
 
 ## API-Football (RapidAPI)
 Base URL: https://v3.football.api-sports.io
@@ -28,31 +28,14 @@ GET /trophies?team={teamId}
 | M | CM |
 | F | ST |
 
-## FUTDB
-Base URL: https://futdb.app/api
-Header: X-AUTH-TOKEN: SUA_CHAVE
-Limite gratuito: 100 req/hora
-
-### Endpoints usados
-GET /players?name={playerName}
-GET /players/{eaPlayerId}
-Retorna: overall, pace, shooting, passing, dribbling, defending, physical
-
-### Estrategia de cruzamento no seed
-1. Para cada jogador da API-Football, buscar no FUTDB pelo nome
-2. Se encontrar exatamente 1 resultado: usar o overall
-3. Se nao encontrar: overall_base = null, overall = 75 (default)
-4. Usuario edita manualmente via F04
-
 ## Ordem no SeedSaveUseCase
 Para cada liga selecionada:
   1. GET /teams?league={id}&season=2024  -> salvar clubs
-  2. GET /players/squads?team={id}       -> salvar players
+  2. GET /players/squads?team={id}       -> salvar players (overall = 75 default)
   3. GET /trophies?team={id}             -> salvar titles (source=real)
-Para cada jogador (batches de 50 com delay):
-  4. GET futdb /players?name={nome}      -> atualizar overall_base
 
-ESTIMATIVA para 6 ligas: ~850 chamadas total
+Overall e editado manualmente pelo usuario via F04.
+ESTIMATIVA para 6 ligas: ~750 chamadas total
 SOLUCAO: seed por liga separado para plano gratuito
 
 ## Configuracao (appsettings.Development.json)
@@ -64,10 +47,6 @@ SOLUCAO: seed por liga separado para plano gratuito
   "ApiFootball": {
     "Key": "SUA_CHAVE_AQUI",
     "BaseUrl": "https://v3.football.api-sports.io"
-  },
-  "FutDb": {
-    "Key": "SUA_CHAVE_AQUI",
-    "BaseUrl": "https://futdb.app/api"
   }
 }
 ```

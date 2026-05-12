@@ -80,11 +80,11 @@
 ### Escopo DENTRO
 - Tela de selecao de ligas ao criar save
 - FootballApiClient consumindo API-Football
-- FutDbClient para overalls
 - SeedSaveUseCase orquestrando importacao
 - Entidades: Club, Player, PlayerOverallHistory, Title (source real)
 - Feedback de progresso durante seed
 - Titulos historicos importados por clube
+- Overall inicial = 75 (padrao), usuario edita via F04
 
 ### Escopo FORA
 - Atualizacao de dados apos criacao do save
@@ -93,7 +93,7 @@
 ### Criterios de aceite
 - [ ] Usuario seleciona ligas antes de criar save
 - [ ] Seed popula clubs, players, player_overall_history, titles
-- [ ] Overall base importado do FUTDB
+- [ ] Jogadores importados com overall = 75 (editavel via F04)
 - [ ] Titulos historicos com source real
 - [ ] Feedback visual de progresso
 - [ ] Se API indisponivel, save criado vazio com aviso

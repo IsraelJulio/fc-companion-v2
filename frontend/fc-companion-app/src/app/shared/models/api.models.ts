@@ -45,7 +45,6 @@ export interface PlayerDetailDto extends PlayerListItemDto {
   nationality: string | null;
   dateOfBirth: string | null;
   preferredFoot: string;
-  overallBase: number | null;
   marketValue: number | null;
   isCustom: boolean;
   seasonHistory: PlayerSeasonStatsDto[];

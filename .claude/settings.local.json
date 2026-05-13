@@ -42,7 +42,21 @@
       "Bash(rtk grep *)",
       "Bash(\"/c/Program Files/dotnet/dotnet.exe\" build FcCompanion.Infrastructure/FcCompanion.Infrastructure.csproj)",
       "Bash(\"/c/Program Files/dotnet/dotnet.exe\" build FcCompanion.API/FcCompanion.API.csproj --no-incremental)",
-      "Bash(\"/c/Program Files/nodejs/node.exe\" \"/c/Users/2273129/AppData/Roaming/npm/node_modules/@angular/cli/bin/ng.js\" build --configuration development)"
+      "Bash(\"/c/Program Files/nodejs/node.exe\" \"/c/Users/2273129/AppData/Roaming/npm/node_modules/@angular/cli/bin/ng.js\" build --configuration development)",
+      "Bash(rtk df *)",
+      "Bash(wmic logicaldisk *)",
+      "Bash(powershell -Command \"Get-PSDrive C | Select-Object Used,Free\")",
+      "Bash(powershell.exe *)",
+      "Bash(rtk read *)",
+      "Bash(/c/Program Files/dotnet/dotnet.exe build *)",
+      "Bash(\"/c/Program Files/nodejs/node.exe\" \"/c/Program Files/nodejs/node_modules/npm/bin/npx-cli.js\" --prefix \"C:\\\\Users\\\\2273129\\\\source\\\\repos\\\\FootLog\\\\fc-companion-v2\\\\frontend\\\\fc-companion-app\" ng build --configuration development)",
+      "Bash(export PATH=\"/c/Program Files/nodejs:$PATH\")",
+      "Bash(ng build *)",
+      "Bash(\"/c/Program Files/dotnet/dotnet.exe\" build -c Release)",
+      "Bash(export PATH=\"$PATH:/c/Program Files/dotnet:/c/Windows/System32\")",
+      "Bash(export PATH=\"$PATH:/c/Program Files/dotnet\")",
+      "Bash(node_modules/.bin/ng build *)",
+      "Bash(cmd.exe /c \"node_modules\\\\\\\\.bin\\\\\\\\ng build --configuration development 2>&1\")"
     ],
     "additionalDirectories": [
       "\\tmp\\rtk-extract"

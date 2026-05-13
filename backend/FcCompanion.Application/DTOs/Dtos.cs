@@ -49,6 +49,11 @@ public record StandingDto(
     int Wins, int Draws, int Losses, int GoalsFor, int GoalsAgainst);
 public record UpdateStandingRequest(
     int Position, int Points, int Wins, int Draws, int Losses, int GoalsFor, int GoalsAgainst);
+public record LeaguePlayerRankingDto(
+    Guid PlayerId, string PlayerName, string Position, int Overall,
+    ClubSummaryDto Club, int Value);
+public record TitleHistoryEntryDto(
+    Guid Id, string Competition, int Year, string Source, string? SeasonName, ClubSummaryDto Club);
 
 public record SeedRequest(IEnumerable<int> LeagueIds);
 public record SeedResultDto(int ClubsImported, int PlayersImported, int TitlesImported);

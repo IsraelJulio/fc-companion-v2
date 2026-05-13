@@ -19,4 +19,42 @@ public class PlayerSeasonStatsRepository(AppDbContext context) : Repository<Play
             .Where(s => s.PlayerId == playerId)
             .OrderByDescending(s => s.Season.StartedAt)
             .ToListAsync();
+
+    public async Task<IEnumerable<PlayerSeasonStats>> GetTopScorersBySeasonAndLeagueAsync(Guid seasonId, string? league, int limit)
+    {
+        var query = _dbSet
+            .Include(s => s.Player).ThenInclude(p => p.CurrentClub)
+            .Include(s => s.Club)
+            .Where(s => s.SeasonId == seasonId);
+
+        if (!string.IsNullOrWhiteSpace(league))
+            query = query.Where(s => s.Club.League == league);
+
+        return await query
+            .OrderByDescending(s => s.Goals)
+            .ThenByDescending(s => s.Assists)
+            .ThenByDescending(s => s.Appearances)
+            .ThenBy(s => s.Player.LastName)
+            .Take(limit)
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<PlayerSeasonStats>> GetTopAssistsBySeasonAndLeagueAsync(Guid seasonId, string? league, int limit)
+    {
+        var query = _dbSet
+            .Include(s => s.Player).ThenInclude(p => p.CurrentClub)
+            .Include(s => s.Club)
+            .Where(s => s.SeasonId == seasonId);
+
+        if (!string.IsNullOrWhiteSpace(league))
+            query = query.Where(s => s.Club.League == league);
+
+        return await query
+            .OrderByDescending(s => s.Assists)
+            .ThenByDescending(s => s.Goals)
+            .ThenByDescending(s => s.Appearances)
+            .ThenBy(s => s.Player.LastName)
+            .Take(limit)
+            .ToListAsync();
+    }
 }

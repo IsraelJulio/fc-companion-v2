@@ -1,0 +1,122 @@
+.leagues-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.filters-bar {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  padding: 1rem;
+  background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+}
+
+.loading-shell {
+  min-height: 20rem;
+  display: grid;
+  place-items: center;
+}
+
+.leagues-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(320px, 1fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.side-panels {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.club-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.club-logo {
+  width: 2rem;
+  height: 2rem;
+  object-fit: contain;
+}
+
+.club-name {
+  font-weight: 600;
+}
+
+.club-league,
+.ranking-meta,
+.history-meta,
+.history-season {
+  color: #64748b;
+  font-size: 0.875rem;
+}
+
+.compact-cell {
+  white-space: nowrap;
+}
+
+.goal-diff {
+  font-weight: 700;
+  text-align: center;
+}
+
+.ranking-list,
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.ranking-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  width: 100%;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  border-radius: 0.85rem;
+  padding: 0.85rem 1rem;
+  cursor: pointer;
+  text-align: left;
+}
+
+.ranking-item:hover {
+  border-color: #94a3b8;
+  transform: translateY(-1px);
+}
+
+.ranking-name,
+.history-title {
+  font-weight: 600;
+}
+
+.history-item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.85rem;
+  padding: 0.85rem 1rem;
+  background: #fff;
+}
+
+.empty-message,
+.empty-block {
+  text-align: center;
+  color: #64748b;
+  padding: 1rem 0.5rem;
+}
+
+@media (max-width: 1100px) {
+  .leagues-layout {
+    grid-template-columns: 1fr;
+  }
+}

@@ -9,10 +9,10 @@
 | F01 | Setup inicial e infraestrutura | done | critica |
 | F02 | Gerenciamento de saves | done | critica |
 | F03 | Seed via API-Football | done | critica |
-| F04 | Modulo de jogadores | in-progress | alta |
-| F05 | Modulo de clubes | todo | alta |
-| F06 | Transferencias | todo | alta |
-| F07 | Ligas e classificacao | todo | media |
+| F04 | Modulo de jogadores | done | alta |
+| F05 | Modulo de clubes | done | alta |
+| F06 | Transferencias | done | alta |
+| F07 | Ligas e classificacao | done | media |
 | F08 | Titulos e conquistas | todo | media |
 | F09 | Virada de temporada | todo | alta |
 | F10 | Dashboards e graficos | todo | media |
@@ -74,7 +74,7 @@
 ---
 
 ## F03 — Seed via API-Football
-**Status**: in-progress
+**Status**: done
 **Prioridade**: critica
 
 ### Escopo DENTRO
@@ -101,7 +101,7 @@
 ---
 
 ## F04 — Modulo de jogadores
-**Status**: todo
+**Status**: done
 **Prioridade**: alta
 
 ### Escopo DENTRO
@@ -130,7 +130,7 @@
 ---
 
 ## F05 — Modulo de clubes
-**Status**: todo
+**Status**: done
 **Prioridade**: alta
 
 ### Escopo DENTRO
@@ -150,7 +150,7 @@
 ---
 
 ## F06 — Transferencias
-**Status**: todo
+**Status**: done
 **Prioridade**: alta
 
 ### Escopo DENTRO
@@ -161,15 +161,15 @@
 - Atualizacao do clube atual do jogador
 
 ### Criterios de aceite
-- [ ] Transferir jogador entre clubes
-- [ ] Historico filtravel
-- [ ] Perfil atualizado apos transferencia
-- [ ] Validacao de clube duplicado
+- [x] Transferir jogador entre clubes
+- [x] Historico filtravel
+- [x] Perfil atualizado apos transferencia
+- [x] Validacao de clube duplicado
 
 ---
 
 ## F07 — Ligas e classificacao
-**Status**: todo
+**Status**: done
 **Prioridade**: media
 
 ### Escopo DENTRO
@@ -179,9 +179,9 @@
 - Historico de campeoes por competicao
 
 ### Criterios de aceite
-- [ ] Tabela editavel por liga e temporada
-- [ ] Rankings calculados automaticamente
-- [ ] Historico de campeoes
+- [x] Tabela editavel por liga e temporada
+- [x] Rankings calculados automaticamente
+- [x] Historico de campeoes
 
 ---
 

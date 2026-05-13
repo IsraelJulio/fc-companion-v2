@@ -1,0 +1,168 @@
+<p-toast />
+
+<div class="detail-page p-4">
+
+  <p-button
+    icon="pi pi-arrow-left"
+    label="Voltar"
+    severity="secondary"
+    [text]="true"
+    (onClick)="goBack()"
+    styleClass="mb-3" />
+
+  @if (!loaded()) {
+    <div class="flex justify-content-center p-8">
+      <p-progressSpinner strokeWidth="4" [style]="{ width: '50px', height: '50px' }" />
+    </div>
+  } @else {
+    @if (player(); as p) {
+
+      <div class="surface-card border-round p-4 mb-3 flex gap-4 align-items-center flex-wrap">
+        @if (p.photoUrl) {
+          <p-avatar [image]="p.photoUrl" size="xlarge" shape="circle" />
+        } @else {
+          <p-avatar icon="pi pi-user" size="xlarge" shape="circle" />
+        }
+        <div class="flex-1">
+          <h2 class="m-0 mb-2">{{ p.fullName }}</h2>
+          <div class="flex gap-2 flex-wrap align-items-center">
+            <p-tag [value]="p.position" severity="secondary" />
+            <p-tag [value]="p.overall.toString()" [severity]="overallSeverity(p.overall)" [rounded]="true" />
+            @if (p.currentClub) {
+              <span class="text-color-secondary text-sm">{{ p.currentClub.name }} · {{ p.currentClub.league }}</span>
+            }
+          </div>
+        </div>
+        <div class="flex gap-2">
+          <p-button label="Editar" icon="pi pi-pencil" severity="secondary" (onClick)="openEdit()" />
+          <p-button label="Transferir" icon="pi pi-arrows-h" severity="secondary" (onClick)="openTransferDialog()" aria-label="Registrar transferência deste jogador" />
+        </div>
+      </div>
+
+      <div class="grid">
+
+        <div class="col-12 md:col-4">
+          <p-card header="Informações">
+            <div class="flex flex-column gap-3">
+              <div class="flex justify-content-between border-bottom-1 surface-border pb-2">
+                <span class="text-color-secondary text-sm">Nacionalidade</span>
+                <span class="font-medium">{{ p.nationality ?? '—' }}</span>
+              </div>
+              <div class="flex justify-content-between border-bottom-1 surface-border pb-2">
+                <span class="text-color-secondary text-sm">Nascimento</span>
+                <span class="font-medium">{{ p.dateOfBirth ?? '—' }}</span>
+              </div>
+              <div class="flex justify-content-between border-bottom-1 surface-border pb-2">
+                <span class="text-color-secondary text-sm">Pé preferencial</span>
+                <span class="font-medium">{{ footLabel(p.preferredFoot) }}</span>
+              </div>
+              <div class="flex justify-content-between border-bottom-1 surface-border pb-2">
+                <span class="text-color-secondary text-sm">Valor de mercado</span>
+                <span class="font-medium">
+                  {{ p.marketValue ? ('€' + (p.marketValue | number)) : '—' }}
+                </span>
+              </div>
+              <div class="flex justify-content-between">
+                <span class="text-color-secondary text-sm">Criado manualmente</span>
+                <span class="font-medium">{{ p.isCustom ? 'Sim' : 'Não' }}</span>
+              </div>
+            </div>
+          </p-card>
+        </div>
+
+        <div class="col-12 md:col-8">
+          <p-card header="Histórico de Temporadas">
+            <p-table [value]="p.seasonHistory" styleClass="p-datatable-sm p-datatable-striped">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>Temporada</th>
+                  <th>Clube</th>
+                  <th style="width:70px" class="text-center">Gols</th>
+                  <th style="width:70px" class="text-center">Assist.</th>
+                  <th style="width:70px" class="text-center">Jogos</th>
+                  <th style="width:70px" class="text-center">Min.</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-s>
+                <tr>
+                  <td>{{ s.seasonName }}</td>
+                  <td>{{ s.clubName }}</td>
+                  <td class="text-center">{{ s.goals }}</td>
+                  <td class="text-center">{{ s.assists }}</td>
+                  <td class="text-center">{{ s.appearances }}</td>
+                  <td class="text-center">{{ s.minutesPlayed }}</td>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td colspan="6" class="text-center p-4 text-color-secondary">Sem histórico de temporadas.</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </p-card>
+        </div>
+
+      </div>
+
+    } @else {
+      <div class="text-center p-8 text-color-secondary">
+        <i class="pi pi-exclamation-circle text-4xl mb-3 block"></i>
+        <p>Jogador não encontrado.</p>
+      </div>
+    }
+  }
+
+</div>
+
+<app-transfer-dialog
+  [visible]="showTransferDialog()"
+  (visibleChange)="showTransferDialog.set($event)"
+  [prefilledPlayerId]="player()?.id ?? null"
+  [prefilledPlayerName]="player()?.fullName ?? null"
+  (transferred)="onTransferred()" />
+
+<p-dialog
+  header="Editar Jogador"
+  [visible]="showEditDialog()"
+  (visibleChange)="!$event && closeEditDialog()"
+  [modal]="true"
+  [draggable]="false"
+  [style]="{ width: '380px' }"
+>
+  <div class="flex flex-column gap-3 pt-2">
+
+    <div class="field">
+      <label class="block mb-1 font-medium text-sm">Overall</label>
+      <p-inputNumber
+        [ngModel]="editForm().overall"
+        (ngModelChange)="updateForm('overall', $event)"
+        [min]="1" [max]="99" [showButtons]="true"
+        [style]="{ width: '100%' }" />
+    </div>
+
+    <div class="field">
+      <label class="block mb-1 font-medium text-sm">Valor de Mercado (€)</label>
+      <p-inputNumber
+        [ngModel]="editForm().marketValue"
+        (ngModelChange)="updateForm('marketValue', $event)"
+        [min]="0"
+        [style]="{ width: '100%' }" />
+    </div>
+
+    <div class="field">
+      <label class="block mb-1 font-medium text-sm">Pé Preferencial</label>
+      <p-dropdown
+        [options]="footOptions"
+        optionLabel="label"
+        optionValue="value"
+        [ngModel]="editForm().preferredFoot"
+        (ngModelChange)="updateForm('preferredFoot', $event)"
+        [style]="{ width: '100%' }" />
+    </div>
+
+  </div>
+  <ng-template pTemplate="footer">
+    <p-button label="Cancelar" severity="secondary" [text]="true" (onClick)="closeEditDialog()" />
+    <p-button label="Salvar" icon="pi pi-check" [loading]="saving()" (onClick)="submitEdit()" />
+  </ng-template>
+</p-dialog>

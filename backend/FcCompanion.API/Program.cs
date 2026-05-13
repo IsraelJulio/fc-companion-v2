@@ -1,10 +1,14 @@
 using AutoMapper;
 using FcCompanion.Application.Interfaces;
 using FcCompanion.Application.Mappings;
+using FcCompanion.Application.UseCases.Clubs;
 using FcCompanion.Application.UseCases.Players;
 using FcCompanion.Application.UseCases.Saves;
 using FcCompanion.Application.UseCases.Seasons;
 using FcCompanion.Application.UseCases.Seed;
+using FcCompanion.Application.UseCases.Standings;
+using FcCompanion.Application.UseCases.Leagues;
+using FcCompanion.Application.UseCases.Transfers;
 using FcCompanion.Infrastructure.ExternalApis;
 using FcCompanion.Infrastructure.Persistence;
 using FcCompanion.Infrastructure.Persistence.Repositories;
@@ -27,7 +31,15 @@ builder.Services.AddScoped<DeleteSaveUseCase>();
 
 // Seasons (F02/F09)
 builder.Services.AddScoped<ISeasonRepository, SeasonRepository>();
+builder.Services.AddScoped<IStandingRepository, StandingRepository>();
+builder.Services.AddScoped<ITitleRepository, TitleRepository>();
+builder.Services.AddScoped<GetSeasonsUseCase>();
 builder.Services.AddScoped<CloseSeasonUseCase>();
+builder.Services.AddScoped<GetStandingsUseCase>();
+builder.Services.AddScoped<UpdateStandingUseCase>();
+builder.Services.AddScoped<GetTopScorersByLeagueUseCase>();
+builder.Services.AddScoped<GetTopAssistsByLeagueUseCase>();
+builder.Services.AddScoped<GetChampionsHistoryUseCase>();
 
 // Players (F04)
 builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
@@ -38,6 +50,16 @@ builder.Services.AddScoped<CreatePlayerUseCase>();
 builder.Services.AddScoped<UpdatePlayerUseCase>();
 builder.Services.AddScoped<GetPlayerSeasonStatsUseCase>();
 builder.Services.AddScoped<UpdatePlayerSeasonStatsUseCase>();
+
+// Clubs (F05)
+builder.Services.AddScoped<IClubRepository, ClubRepository>();
+builder.Services.AddScoped<GetClubsUseCase>();
+builder.Services.AddScoped<GetClubDetailUseCase>();
+
+// Transfers (F06)
+builder.Services.AddScoped<ITransferRepository, TransferRepository>();
+builder.Services.AddScoped<GetTransfersUseCase>();
+builder.Services.AddScoped<CreateTransferUseCase>();
 
 // Seed (F03)
 builder.Services.AddHttpClient<IFootballApiService, FootballApiClient>(client =>

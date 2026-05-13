@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy, inject, signal, computed, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { toSignal, toObservable } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, EMPTY, Subject, catchError, map, merge, of, switchMap } from 'rxjs';
 import { MessageService } from 'primeng/api';
@@ -16,10 +17,14 @@ import { AvatarModule } from 'primeng/avatar';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { PlayersService } from '../../services/players.service';
 import { SaveContextService } from '../../../../core/services/save-context.service';
-import { PlayerListItemDto, PagedResult } from '../../../../shared/models/api.models';
-import { PlayerFilters, UpdateStatsForm, POSITIONS, LEAGUES } from '../../models/players.model';
+import { PlayerListItemDto, ClubSummaryDto, PagedResult } from '../../../../shared/models/api.models';
+import { PlayerFilters, UpdateStatsForm, CreatePlayerForm, POSITIONS, LEAGUES } from '../../models/players.model';
 
 const EMPTY_PAGE: PagedResult<PlayerListItemDto> = { items: [], total: 0, page: 1, pageSize: 20 };
+const DEFAULT_CREATE: CreatePlayerForm = {
+  firstName: '', lastName: '', position: 'ST', currentClubId: '',
+  overall: 75, nationality: null, preferredFoot: 'right'
+};
 
 interface ListState {
   loading: boolean;
@@ -43,10 +48,16 @@ export class PlayersListComponent {
   private readonly playersService = inject(PlayersService);
   private readonly saveContext = inject(SaveContextService);
   private readonly messageService = inject(MessageService);
+  private readonly router = inject(Router);
 
   readonly pageSize = 20;
   readonly positionOptions = [{ label: 'Todas', value: '' }, ...POSITIONS.map(p => ({ label: p, value: p }))];
   readonly leagueOptions = [{ label: 'Todas', value: '' }, ...LEAGUES.map(l => ({ label: l.label, value: l.value }))];
+  readonly footOptions = [
+    { label: 'Direito', value: 'right' },
+    { label: 'Esquerdo', value: 'left' },
+    { label: 'Ambos', value: 'both' }
+  ];
 
   readonly filters = signal<PlayerFilters>({ search: '', position: '', clubId: null, league: '' });
   readonly page = signal(1);
@@ -77,7 +88,22 @@ export class PlayersListComponent {
   readonly players = computed(() => this.listState().data.items);
   readonly total = computed(() => this.listState().data.total);
 
-  // --- Dialog state ---
+  // Clubs for create form
+  private readonly clubs$ = toObservable(this.saveContext.activeSaveId).pipe(
+    switchMap(saveId => {
+      if (!saveId) return of<ClubSummaryDto[]>([]);
+      return this.playersService.getClubs(saveId).pipe(
+        catchError(() => of<ClubSummaryDto[]>([]))
+      );
+    })
+  );
+
+  readonly clubOptions = toSignal(
+    this.clubs$.pipe(map(clubs => clubs.map(c => ({ label: c.name, value: c.id })))),
+    { initialValue: [] as { label: string; value: string }[] }
+  );
+
+  // --- Stats dialog state ---
   readonly showStatsDialog = signal(false);
   readonly selectedPlayerName = signal('');
   readonly savingStats = signal(false);
@@ -87,7 +113,6 @@ export class PlayersListComponent {
 
   private editingPlayerId: string | null = null;
 
-  // Detail fetch stream for dialog
   private readonly detailTrigger$ = new Subject<string>();
 
   private readonly playerDetail = toSignal(
@@ -104,8 +129,15 @@ export class PlayersListComponent {
 
   private readonly syncDetailEffect = effect(() => {
     const detail = this.playerDetail();
+    // undefined = signal never emitted yet (component just rendered); skip
+    if (detail === undefined) return;
+
     const seasonId = this.saveContext.activeSeasonId();
-    if (!detail || !seasonId) return;
+    // null detail = HTTP error; still stop the loading spinner
+    if (!detail || !seasonId) {
+      this.loadingDetail.set(false);
+      return;
+    }
     const stats = detail.seasonHistory.find(s => s.seasonId === seasonId);
     if (stats) {
       this.editingSeasonId.set(stats.seasonId);
@@ -119,7 +151,6 @@ export class PlayersListComponent {
     this.loadingDetail.set(false);
   }, { allowSignalWrites: true });
 
-  // Save stream
   private readonly saveTrigger$ = new Subject<UpdateStatsForm>();
 
   private readonly saveResult = toSignal(
@@ -145,6 +176,38 @@ export class PlayersListComponent {
     this.savingStats.set(false);
     this.showStatsDialog.set(false);
     this.messageService.add({ severity: 'success', summary: 'Stats salvas', detail: `${this.selectedPlayerName()} atualizado` });
+    this.refresh$.next();
+  }, { allowSignalWrites: true });
+
+  // --- Create dialog state ---
+  readonly showCreateDialog = signal(false);
+  readonly createForm = signal<CreatePlayerForm>({ ...DEFAULT_CREATE });
+  readonly savingCreate = signal(false);
+
+  private readonly createTrigger$ = new Subject<CreatePlayerForm>();
+
+  private readonly createResult = toSignal(
+    this.createTrigger$.pipe(
+      switchMap(req => {
+        const saveId = this.saveContext.activeSaveId();
+        if (!saveId) return EMPTY;
+        return this.playersService.create(saveId, req).pipe(
+          catchError(() => {
+            this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Falha ao criar jogador' });
+            this.savingCreate.set(false);
+            return EMPTY;
+          })
+        );
+      })
+    )
+  );
+
+  private readonly afterCreateEffect = effect(() => {
+    const result = this.createResult();
+    if (!result) return;
+    this.savingCreate.set(false);
+    this.showCreateDialog.set(false);
+    this.messageService.add({ severity: 'success', summary: 'Criado', detail: `${result.fullName} adicionado` });
     this.refresh$.next();
   }, { allowSignalWrites: true });
 
@@ -213,6 +276,33 @@ export class PlayersListComponent {
 
   updateStat(key: keyof UpdateStatsForm, value: number): void {
     this.editingStats.update(s => ({ ...s, [key]: value ?? 0 }));
+  }
+
+  openCreateDialog(): void {
+    this.createForm.set({ ...DEFAULT_CREATE });
+    this.showCreateDialog.set(true);
+  }
+
+  closeCreateDialog(): void {
+    this.showCreateDialog.set(false);
+  }
+
+  updateCreate<K extends keyof CreatePlayerForm>(key: K, value: CreatePlayerForm[K]): void {
+    this.createForm.update(f => ({ ...f, [key]: value }));
+  }
+
+  submitCreate(): void {
+    const form = this.createForm();
+    if (!form.firstName || !form.lastName || !form.currentClubId) {
+      this.messageService.add({ severity: 'warn', summary: 'Campos obrigatórios', detail: 'Preencha nome e clube' });
+      return;
+    }
+    this.savingCreate.set(true);
+    this.createTrigger$.next(form);
+  }
+
+  viewPlayer(player: PlayerListItemDto): void {
+    this.router.navigate(['/players', player.id]);
   }
 
   overallSeverity(overall: number): 'success' | 'info' | 'warning' | 'danger' {

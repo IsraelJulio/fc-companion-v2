@@ -1,0 +1,48 @@
+<p-toast />
+
+<div class="clubs-page">
+
+  <div class="filters-bar p-4 flex gap-3 align-items-center">
+    <span class="text-xl font-semibold flex-1">Clubes</span>
+    <p-dropdown
+      [options]="leagueOptions"
+      optionLabel="label"
+      optionValue="value"
+      [ngModel]="selectedLeague()"
+      (ngModelChange)="changeLeague($event)"
+      [style]="{ width: '200px' }" />
+  </div>
+
+  @if (loading()) {
+    <div class="flex justify-content-center p-8">
+      <p-progressSpinner strokeWidth="4" [style]="{ width: '50px', height: '50px' }" />
+    </div>
+  } @else if (clubs().length === 0) {
+    <div class="text-center p-8 text-color-secondary">
+      <i class="pi pi-shield text-4xl mb-3 block"></i>
+      <p>Nenhum clube encontrado. Verifique se o seed foi executado.</p>
+    </div>
+  } @else {
+    <div class="clubs-grid p-4">
+      @for (club of clubs(); track club.id) {
+        <div class="club-card surface-card border-round p-3 cursor-pointer" (click)="openDetail(club)">
+          <div class="flex gap-3 align-items-center">
+            @if (club.logoUrl) {
+              <p-avatar [image]="club.logoUrl" size="large" shape="circle" />
+            } @else {
+              <p-avatar icon="pi pi-shield" size="large" shape="circle" />
+            }
+            <div class="flex-1 min-w-0">
+              <div class="font-semibold text-overflow-ellipsis overflow-hidden white-space-nowrap">
+                {{ club.name }}
+              </div>
+              <p-tag [value]="club.league" severity="secondary" styleClass="text-xs mt-1" />
+            </div>
+            <i class="pi pi-chevron-right text-color-secondary"></i>
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+</div>

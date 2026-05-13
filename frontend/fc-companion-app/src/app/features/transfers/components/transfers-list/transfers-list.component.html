@@ -1,0 +1,104 @@
+<p-toast />
+
+<div class="transfers-page">
+
+  <div class="filters-bar p-4 flex gap-3 align-items-center flex-wrap">
+    <input
+      pInputText
+      type="text"
+      placeholder="Buscar jogador..."
+      [ngModel]="playerSearch()"
+      (ngModelChange)="onPlayerSearch($event)"
+      style="min-width: 200px; flex: 1"
+      aria-label="Buscar por nome do jogador" />
+
+    <p-dropdown
+      [options]="clubFilterOptions()"
+      optionLabel="label"
+      optionValue="value"
+      placeholder="Clube"
+      [showClear]="false"
+      [filter]="true"
+      filterBy="label"
+      [ngModel]="selectedClubId() ?? ''"
+      (ngModelChange)="onClubChange($event)"
+      [style]="{ width: '220px' }"
+      aria-label="Filtrar por clube" />
+
+    <p-dropdown
+      [options]="seasonOptions()"
+      optionLabel="label"
+      optionValue="value"
+      placeholder="Temporada"
+      [showClear]="false"
+      [ngModel]="selectedSeason()"
+      (ngModelChange)="onSeasonChange($event)"
+      [style]="{ width: '160px' }"
+      aria-label="Filtrar por temporada" />
+
+    <p-button
+      label="Nova Transferência"
+      icon="pi pi-arrows-h"
+      (onClick)="openTransferDialog()"
+      aria-label="Registrar nova transferência" />
+  </div>
+
+  <p-table
+    [value]="filteredTransfers()"
+    [loading]="loading()"
+    styleClass="p-datatable-gridlines"
+    [rowHover]="true"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 120px">Data</th>
+        <th>Jogador</th>
+        <th>De</th>
+        <th>Para</th>
+        <th style="width: 120px">Temporada</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-t>
+      <tr>
+        <td>{{ t.transferDate | date:'dd/MM/yyyy' }}</td>
+        <td class="font-medium">{{ t.playerName }}</td>
+        <td>
+          @if (t.fromClub) {
+            <div class="flex align-items-center gap-2">
+              @if (t.fromClub.logoUrl) {
+                <img [src]="t.fromClub.logoUrl" alt="" width="20" height="20" style="object-fit:contain" />
+              }
+              {{ t.fromClub.name }}
+            </div>
+          } @else {
+            <span class="text-color-secondary">Livre</span>
+          }
+        </td>
+        <td>
+          <div class="flex align-items-center gap-2">
+            @if (t.toClub.logoUrl) {
+              <img [src]="t.toClub.logoUrl" alt="" width="20" height="20" style="object-fit:contain" />
+            }
+            {{ t.toClub.name }}
+          </div>
+        </td>
+        <td>{{ t.seasonName }}</td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="5" class="text-center p-4 text-color-secondary">
+          Nenhuma transferência encontrada.
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+</div>
+
+<app-transfer-dialog
+  [visible]="showTransferDialog()"
+  (visibleChange)="showTransferDialog.set($event)"
+  (transferred)="onTransferred()" />

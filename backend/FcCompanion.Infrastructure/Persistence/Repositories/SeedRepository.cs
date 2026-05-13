@@ -33,11 +33,13 @@ public class SeedRepository(AppDbContext context) : ISeedRepository
         IEnumerable<Club> clubs,
         IEnumerable<Player> players,
         IEnumerable<PlayerOverallHistory> histories,
+        IEnumerable<PlayerSeasonStats> seasonStats,
         IEnumerable<Title> titles)
     {
         context.Clubs.AddRange(clubs);
         context.Players.AddRange(players);
         context.PlayerOverallHistories.AddRange(histories);
+        context.PlayerSeasonStats.AddRange(seasonStats);
         context.Titles.AddRange(titles);
         await context.SaveChangesAsync();
     }

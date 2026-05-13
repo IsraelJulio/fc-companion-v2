@@ -1,0 +1,100 @@
+<p-toast />
+
+<p-dialog
+  header="Registrar Transferência"
+  [visible]="visible"
+  (visibleChange)="visibleChange.emit($event)"
+  [modal]="true"
+  [closable]="true"
+  [draggable]="false"
+  [style]="{ width: '440px' }"
+>
+  <div class="flex flex-column gap-3 pt-2" role="form" aria-label="Formulário de transferência">
+
+    <div class="field">
+      <label id="lbl-player" class="block mb-1 font-medium text-sm" for="transfer-player">
+        Jogador *
+      </label>
+      @if (prefilledPlayerId) {
+        <div
+          class="surface-ground border-round p-2 text-sm font-medium"
+          role="status"
+          aria-labelledby="lbl-player">
+          {{ prefilledPlayerName ?? '—' }}
+        </div>
+      } @else {
+        <p-dropdown
+          inputId="transfer-player"
+          [options]="playerOptions()"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Selecionar jogador"
+          [filter]="true"
+          filterBy="label"
+          emptyFilterMessage="Nenhum jogador encontrado"
+          [ngModel]="form().playerId"
+          (ngModelChange)="updateForm('playerId', $event)"
+          [style]="{ width: '100%' }"
+          aria-labelledby="lbl-player" />
+      }
+    </div>
+
+    <div class="field">
+      <label id="lbl-club" class="block mb-1 font-medium text-sm" for="transfer-club">
+        Clube de destino *
+      </label>
+      @if (prefilledToClubId) {
+        <div
+          class="surface-ground border-round p-2 text-sm font-medium"
+          role="status"
+          aria-labelledby="lbl-club">
+          {{ prefilledToClubName ?? '—' }}
+        </div>
+      } @else {
+        <p-dropdown
+          inputId="transfer-club"
+          [options]="clubOptions()"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Selecionar clube de destino"
+          [filter]="true"
+          filterBy="label"
+          emptyFilterMessage="Nenhum clube encontrado"
+          [ngModel]="form().toClubId"
+          (ngModelChange)="updateForm('toClubId', $event)"
+          [style]="{ width: '100%' }"
+          aria-labelledby="lbl-club" />
+      }
+    </div>
+
+    <div class="field">
+      <label class="block mb-1 font-medium text-sm" for="transfer-date">
+        Data da transferência *
+      </label>
+      <input
+        id="transfer-date"
+        pInputText
+        type="date"
+        [ngModel]="form().transferDate"
+        (ngModelChange)="updateForm('transferDate', $event)"
+        class="w-full"
+        aria-required="true" />
+    </div>
+
+  </div>
+
+  <ng-template pTemplate="footer">
+    <p-button
+      label="Cancelar"
+      severity="secondary"
+      [text]="true"
+      (onClick)="visibleChange.emit(false)"
+      aria-label="Cancelar" />
+    <p-button
+      label="Confirmar"
+      icon="pi pi-check"
+      [loading]="saving()"
+      (onClick)="submit()"
+      aria-label="Confirmar transferência" />
+  </ng-template>
+</p-dialog>

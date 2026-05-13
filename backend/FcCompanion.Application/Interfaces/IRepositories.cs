@@ -27,6 +27,7 @@ public interface IClubRepository : IRepository<Club>
 {
     Task<IEnumerable<Club>> GetBySaveIdAsync(Guid saveId, string? league = null);
     Task<Club?> GetWithDetailsAsync(Guid clubId);
+    Task<IEnumerable<(Player Player, int TotalGoals)>> GetTopScorersByClubIdAsync(Guid clubId, int limit);
 }
 
 public interface IPlayerRepository : IRepository<Player>
@@ -40,20 +41,25 @@ public interface IPlayerSeasonStatsRepository : IRepository<PlayerSeasonStats>
 {
     Task<PlayerSeasonStats?> GetByPlayerAndSeasonAsync(Guid playerId, Guid seasonId);
     Task<IEnumerable<PlayerSeasonStats>> GetByPlayerIdAsync(Guid playerId);
+    Task<IEnumerable<PlayerSeasonStats>> GetTopScorersBySeasonAndLeagueAsync(Guid seasonId, string? league, int limit);
+    Task<IEnumerable<PlayerSeasonStats>> GetTopAssistsBySeasonAndLeagueAsync(Guid seasonId, string? league, int limit);
 }
 
 public interface ITransferRepository : IRepository<Transfer>
 {
     Task<IEnumerable<Transfer>> GetBySaveIdAsync(Guid saveId, Guid? playerId, Guid? clubId, Guid? seasonId);
+    Task<Transfer?> GetWithDetailsAsync(Guid transferId);
 }
 
 public interface ITitleRepository : IRepository<Title>
 {
     Task<IEnumerable<Title>> GetByClubIdAsync(Guid clubId);
+    Task<IEnumerable<Title>> GetBySaveIdAsync(Guid saveId, string? competition = null);
 }
 
 public interface IStandingRepository : IRepository<Standing>
 {
+    Task<Standing?> GetWithClubAsync(Guid id);
     Task<IEnumerable<Standing>> GetBySeasonAndLeagueAsync(Guid seasonId, string? league);
 }
 
@@ -66,5 +72,6 @@ public interface ISeedRepository
         IEnumerable<Club> clubs,
         IEnumerable<Player> players,
         IEnumerable<PlayerOverallHistory> histories,
+        IEnumerable<PlayerSeasonStats> seasonStats,
         IEnumerable<Title> titles);
 }

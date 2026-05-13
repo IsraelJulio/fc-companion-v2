@@ -43,6 +43,10 @@ POST /saves/{saveId}/transfers     body: { playerId, toClubId, transferDate }
 ## Standings (F07)
 GET /saves/{saveId}/standings      ?league=&seasonId=
 PUT /saves/{saveId}/standings/{id}
+GET /saves/{saveId}/leagues/rankings/top-scorers   ?league=&seasonId=&limit=10
+GET /saves/{saveId}/leagues/rankings/top-assists   ?league=&seasonId=&limit=10
+GET /saves/{saveId}/leagues/champions-history      ?competition=
+GET /saves/{saveId}/seasons
 
 ## Titles (F08)
 GET    /saves/{saveId}/clubs/{clubId}/titles

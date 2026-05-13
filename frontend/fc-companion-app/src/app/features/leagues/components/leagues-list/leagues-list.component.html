@@ -1,0 +1,177 @@
+<p-toast />
+
+<div class="leagues-page">
+  <div class="filters-bar">
+    <p-dropdown
+      [options]="leagueOptions"
+      optionLabel="label"
+      optionValue="value"
+      placeholder="Liga"
+      [ngModel]="filters().league"
+      (ngModelChange)="changeLeague($event)"
+      [style]="{ width: '220px' }" />
+
+    <p-dropdown
+      [options]="seasonOptions()"
+      optionLabel="label"
+      optionValue="value"
+      placeholder="Temporada"
+      [ngModel]="filters().seasonId"
+      (ngModelChange)="changeSeason($event)"
+      [style]="{ width: '220px' }" />
+
+    <p-dropdown
+      [options]="competitionOptions()"
+      optionLabel="label"
+      optionValue="value"
+      placeholder="Competição"
+      [ngModel]="filters().competition"
+      (ngModelChange)="changeCompetition($event)"
+      [style]="{ width: '240px' }" />
+  </div>
+
+  @if (loading()) {
+    <div class="loading-shell">
+      <p-progressSpinner strokeWidth="4" [style]="{ width: '48px', height: '48px' }" />
+    </div>
+  } @else {
+    <div class="leagues-layout">
+      <p-card header="Classificação editável" subheader="Ajuste pontos, vitórias e saldo manualmente por liga e temporada.">
+        <p-table [value]="standings()" styleClass="p-datatable-gridlines">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>#</th>
+              <th>Clube</th>
+              <th>Pts</th>
+              <th>V</th>
+              <th>E</th>
+              <th>D</th>
+              <th>GP</th>
+              <th>GC</th>
+              <th>SG</th>
+              <th></th>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="body" let-row>
+            <tr>
+              <td class="compact-cell">
+                <p-inputNumber
+                  [ngModel]="row.draft.position"
+                  (ngModelChange)="updateStanding(row.id, 'position', $event)"
+                  [min]="1"
+                  [showButtons]="true"
+                  [style]="{ width: '5rem' }" />
+              </td>
+              <td>
+                <div class="club-cell">
+                  @if (row.club.logoUrl) {
+                    <img [src]="row.club.logoUrl" [alt]="row.club.name" class="club-logo" />
+                  }
+                  <div>
+                    <div class="club-name">{{ row.club.name }}</div>
+                    <div class="club-league">{{ row.club.league }}</div>
+                  </div>
+                </div>
+              </td>
+              <td class="compact-cell">
+                <p-inputNumber
+                  [ngModel]="row.draft.points"
+                  (ngModelChange)="updateStanding(row.id, 'points', $event)"
+                  [min]="0"
+                  [showButtons]="true"
+                  [style]="{ width: '5.5rem' }" />
+              </td>
+              <td class="compact-cell">
+                <p-inputNumber [ngModel]="row.draft.wins" (ngModelChange)="updateStanding(row.id, 'wins', $event)" [min]="0" [showButtons]="true" [style]="{ width: '5rem' }" />
+              </td>
+              <td class="compact-cell">
+                <p-inputNumber [ngModel]="row.draft.draws" (ngModelChange)="updateStanding(row.id, 'draws', $event)" [min]="0" [showButtons]="true" [style]="{ width: '5rem' }" />
+              </td>
+              <td class="compact-cell">
+                <p-inputNumber [ngModel]="row.draft.losses" (ngModelChange)="updateStanding(row.id, 'losses', $event)" [min]="0" [showButtons]="true" [style]="{ width: '5rem' }" />
+              </td>
+              <td class="compact-cell">
+                <p-inputNumber [ngModel]="row.draft.goalsFor" (ngModelChange)="updateStanding(row.id, 'goalsFor', $event)" [min]="0" [showButtons]="true" [style]="{ width: '5rem' }" />
+              </td>
+              <td class="compact-cell">
+                <p-inputNumber [ngModel]="row.draft.goalsAgainst" (ngModelChange)="updateStanding(row.id, 'goalsAgainst', $event)" [min]="0" [showButtons]="true" [style]="{ width: '5rem' }" />
+              </td>
+              <td class="goal-diff">{{ goalDifference(row) }}</td>
+              <td>
+                <p-button
+                  label="Salvar"
+                  icon="pi pi-check"
+                  size="small"
+                  [loading]="savingRowId() === row.id"
+                  (onClick)="saveStanding(row)" />
+              </td>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="10" class="empty-message">
+                Nenhuma classificação encontrada para esse filtro.
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </p-card>
+
+      <div class="side-panels">
+        <p-card header="Artilheiros" subheader="Ranking calculado automaticamente a partir das stats da temporada.">
+          <div class="ranking-list">
+            @for (item of topScorers(); track item.playerId) {
+              <button type="button" class="ranking-item" (click)="openPlayer(item.playerId)">
+                <div>
+                  <div class="ranking-name">{{ item.playerName }}</div>
+                  <div class="ranking-meta">{{ item.club.name }} · {{ item.position }}</div>
+                </div>
+                <p-tag [value]="item.value + ' gols'" severity="info" />
+              </button>
+            }
+            @if (topScorers().length === 0) {
+              <div class="empty-block">Sem dados de artilharia nessa temporada.</div>
+            }
+          </div>
+        </p-card>
+
+        <p-card header="Assistentes" subheader="Assistências ordenadas automaticamente por liga e temporada.">
+          <div class="ranking-list">
+            @for (item of topAssists(); track item.playerId) {
+              <button type="button" class="ranking-item" (click)="openPlayer(item.playerId)">
+                <div>
+                  <div class="ranking-name">{{ item.playerName }}</div>
+                  <div class="ranking-meta">{{ item.club.name }} · {{ item.position }}</div>
+                </div>
+                <p-tag [value]="item.value + ' ast'" severity="success" />
+              </button>
+            }
+            @if (topAssists().length === 0) {
+              <div class="empty-block">Sem dados de assistências nessa temporada.</div>
+            }
+          </div>
+        </p-card>
+
+        <p-card header="Histórico de campeões" subheader="Títulos agrupados por competição para consultar rapidamente quem venceu cada edição.">
+          <div class="history-list">
+            @for (item of champions(); track item.id) {
+              <div class="history-item">
+                <div>
+                  <div class="history-title">{{ item.competition }}</div>
+                  <div class="history-meta">{{ item.year }} · {{ item.club.name }}</div>
+                  <div class="history-season">{{ item.seasonName ?? 'Registro histórico importado' }}</div>
+                </div>
+                <p-tag [value]="item.source" [severity]="sourceSeverity(item.source)" />
+              </div>
+            }
+            @if (champions().length === 0) {
+              <div class="empty-block">Nenhum campeão encontrado para esse filtro.</div>
+            }
+          </div>
+        </p-card>
+      </div>
+    </div>
+  }
+</div>

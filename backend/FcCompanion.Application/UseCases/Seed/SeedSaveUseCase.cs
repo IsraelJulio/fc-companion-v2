@@ -34,10 +34,11 @@ public class SeedSaveUseCase(
         var existingPlayers = await seedRepository.GetExistingPlayerExternalIdsAsync(saveId);
         var existingTitles  = await seedRepository.GetExistingTitleKeysAsync(saveId);
 
-        var newClubs    = new List<Club>();
-        var newPlayers  = new List<Player>();
-        var newHistories = new List<PlayerOverallHistory>();
-        var newTitles   = new List<Title>();
+        var newClubs      = new List<Club>();
+        var newPlayers    = new List<Player>();
+        var newHistories  = new List<PlayerOverallHistory>();
+        var newSeasonStats = new List<PlayerSeasonStats>();
+        var newTitles     = new List<Title>();
 
         foreach (var leagueId in leagueIds)
         {
@@ -96,6 +97,12 @@ public class SeedSaveUseCase(
                         SeasonId = activeSeason.Id,
                         Overall  = 75,
                     });
+                    newSeasonStats.Add(new PlayerSeasonStats
+                    {
+                        PlayerId = player.Id,
+                        SeasonId = activeSeason.Id,
+                        ClubId   = clubId,
+                    });
                     existingPlayers.Add(apiPlayer.Id);
                 }
 
@@ -124,7 +131,7 @@ public class SeedSaveUseCase(
             }
         }
 
-        await seedRepository.AddRangeAsync(newClubs, newPlayers, newHistories, newTitles);
+        await seedRepository.AddRangeAsync(newClubs, newPlayers, newHistories, newSeasonStats, newTitles);
 
         return Result<SeedResultDto>.Ok(new SeedResultDto(
             newClubs.Count, newPlayers.Count, newTitles.Count));

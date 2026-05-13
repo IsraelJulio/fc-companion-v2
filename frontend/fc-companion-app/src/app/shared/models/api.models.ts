@@ -96,6 +96,24 @@ export interface StandingDto {
   goalsAgainst: number;
 }
 
+export interface LeaguePlayerRankingDto {
+  playerId: string;
+  playerName: string;
+  position: string;
+  overall: number;
+  club: ClubSummaryDto;
+  value: number;
+}
+
+export interface TitleHistoryEntryDto {
+  id: string;
+  competition: string;
+  year: number;
+  source: 'real' | 'save';
+  seasonName: string | null;
+  club: ClubSummaryDto;
+}
+
 export interface DashboardSummaryDto {
   topScorer: PlayerListItemDto | null;
   topAssister: PlayerListItemDto | null;

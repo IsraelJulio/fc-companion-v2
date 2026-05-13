@@ -1,0 +1,124 @@
+<p-toast />
+
+<div class="dashboard-page">
+  @if (loading()) {
+    <div class="dashboard-loading">
+      <p-progressSpinner strokeWidth="4" [style]="{ width: '48px', height: '48px' }" />
+    </div>
+  } @else {
+    <div class="summary-grid">
+      <p-card class="summary-card">
+        <span class="summary-label">Jogadores</span>
+        <strong class="summary-value">{{ summary()?.totalPlayers ?? 0 }}</strong>
+      </p-card>
+      <p-card class="summary-card">
+        <span class="summary-label">Clubes</span>
+        <strong class="summary-value">{{ summary()?.totalClubs ?? 0 }}</strong>
+      </p-card>
+      <p-card class="summary-card clickable" (click)="summary()?.topScorer && openPlayer(summary()!.topScorer!.id)">
+        <span class="summary-label">Artilheiro atual</span>
+        <strong class="summary-value summary-name">{{ summary()?.topScorer?.fullName ?? '—' }}</strong>
+      </p-card>
+      <p-card class="summary-card clickable" (click)="summary()?.topAssister && openPlayer(summary()!.topAssister!.id)">
+        <span class="summary-label">Maior garçom</span>
+        <strong class="summary-value summary-name">{{ summary()?.topAssister?.fullName ?? '—' }}</strong>
+      </p-card>
+      <p-card class="summary-card clickable" (click)="summary()?.highestOverall && openPlayer(summary()!.highestOverall!.id)">
+        <span class="summary-label">Maior overall</span>
+        <strong class="summary-value summary-name">{{ summary()?.highestOverall?.fullName ?? '—' }}</strong>
+      </p-card>
+    </div>
+
+    <div class="dashboard-layout">
+      <div class="dashboard-main">
+        <p-card header="Evolução de overall" subheader="Acompanhe a progressão do jogador ao longo das temporadas." class="chart-card">
+          <div class="chart-filters">
+            <p-dropdown
+              [options]="playerOptions()"
+              optionLabel="label"
+              optionValue="value"
+              placeholder="Selecione um jogador"
+              [ngModel]="selectedPlayerId()"
+              (ngModelChange)="choosePlayer($event)"
+              [style]="{ width: '100%' }" />
+          </div>
+          <div class="chart-shell">
+            @if (overallHistory().length > 0) {
+              <p-chart type="line" [data]="overallChartData()" [options]="overallChartOptions" />
+            } @else {
+              <div class="empty-chart">Sem histórico suficiente para exibir o gráfico.</div>
+            }
+          </div>
+        </p-card>
+
+        <p-card header="Comparação de overall" subheader="Compare a evolução histórica entre dois jogadores." class="chart-card">
+          <div class="comparison-filters">
+            <p-dropdown
+              [options]="playerOptions()"
+              optionLabel="label"
+              optionValue="value"
+              placeholder="Jogador 1"
+              [ngModel]="selectedPlayerId()"
+              (ngModelChange)="choosePlayer($event)"
+              [style]="{ width: '100%' }" />
+            <p-dropdown
+              [options]="playerOptions()"
+              optionLabel="label"
+              optionValue="value"
+              placeholder="Jogador 2"
+              [ngModel]="selectedComparePlayerId()"
+              (ngModelChange)="chooseComparePlayer($event)"
+              [style]="{ width: '100%' }" />
+          </div>
+          <div class="chart-shell">
+            @if (overallHistory().length > 0 || compareOverallHistory().length > 0) {
+              <p-chart type="line" [data]="comparisonChartData()" [options]="overallChartOptions" />
+            } @else {
+              <div class="empty-chart">Selecione jogadores com histórico para comparar.</div>
+            }
+          </div>
+        </p-card>
+      </div>
+
+      <div class="dashboard-side">
+        <p-card header="Top artilheiros" subheader="Ranking em bar chart da temporada selecionada.">
+          <div class="side-filter">
+            <p-dropdown
+              [options]="seasonOptions()"
+              optionLabel="label"
+              optionValue="value"
+              placeholder="Temporada"
+              [ngModel]="selectedSeasonId()"
+              (ngModelChange)="chooseSeason($event)"
+              [style]="{ width: '100%' }" />
+          </div>
+          <div class="bar-shell">
+            @if (topScorers().length === 0) {
+              <div class="empty-list">Nenhum artilheiro encontrado para a temporada.</div>
+            } @else {
+              <p-chart type="bar" [data]="topScorersBarData()" [options]="topScorersBarOptions" />
+            }
+          </div>
+        </p-card>
+
+        <p-card header="Histórico de títulos" subheader="Últimos registros do save, incluindo conquistas reais e do save.">
+          <div class="history-list">
+            @for (item of titleHistory(); track item.id) {
+              <div class="history-item">
+                <div>
+                  <div class="history-title">{{ item.competition }}</div>
+                  <div class="history-meta">{{ item.year }} · {{ item.club.name }}</div>
+                  <div class="history-season">{{ item.seasonName ?? 'Registro histórico' }}</div>
+                </div>
+                <p-tag [value]="item.source" [severity]="sourceSeverity(item.source)" />
+              </div>
+            }
+            @if (titleHistory().length === 0) {
+              <div class="empty-list">Sem histórico de títulos disponível.</div>
+            }
+          </div>
+        </p-card>
+      </div>
+    </div>
+  }
+</div>

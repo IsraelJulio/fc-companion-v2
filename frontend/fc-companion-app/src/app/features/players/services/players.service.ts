@@ -1,7 +1,14 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { PlayerListItemDto, PlayerDetailDto, PlayerSeasonStatsDto, ClubSummaryDto, PagedResult } from '../../../shared/models/api.models';
+import {
+  PlayerListItemDto,
+  PlayerDetailDto,
+  PlayerSeasonStatsDto,
+  ClubSummaryDto,
+  OverallHistoryDto,
+  PagedResult
+} from '../../../shared/models/api.models';
 import { PlayerFilters, UpdateStatsForm, CreatePlayerForm, UpdatePlayerForm } from '../models/players.model';
 
 @Injectable({ providedIn: 'root' })
@@ -21,6 +28,10 @@ export class PlayersService {
 
   getById(saveId: string, id: string): Observable<PlayerDetailDto> {
     return this.http.get<PlayerDetailDto>(`/saves/${saveId}/players/${id}`);
+  }
+
+  getOverallHistory(saveId: string, id: string): Observable<OverallHistoryDto[]> {
+    return this.http.get<OverallHistoryDto[]>(`/saves/${saveId}/players/${id}/overall-history`);
   }
 
   create(saveId: string, req: CreatePlayerForm): Observable<PlayerDetailDto> {

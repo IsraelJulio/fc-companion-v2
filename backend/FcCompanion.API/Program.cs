@@ -2,6 +2,7 @@ using AutoMapper;
 using FcCompanion.Application.Interfaces;
 using FcCompanion.Application.Mappings;
 using FcCompanion.Application.UseCases.Clubs;
+using FcCompanion.Application.UseCases.Dashboard;
 using FcCompanion.Application.UseCases.Players;
 using FcCompanion.Application.UseCases.Saves;
 using FcCompanion.Application.UseCases.Seasons;
@@ -42,6 +43,9 @@ builder.Services.AddScoped<UpdateStandingUseCase>();
 builder.Services.AddScoped<GetTopScorersByLeagueUseCase>();
 builder.Services.AddScoped<GetTopAssistsByLeagueUseCase>();
 builder.Services.AddScoped<GetChampionsHistoryUseCase>();
+builder.Services.AddScoped<GetDashboardSummaryUseCase>();
+builder.Services.AddScoped<GetDashboardTopScorersUseCase>();
+builder.Services.AddScoped<GetDashboardTitleHistoryUseCase>();
 
 // Players (F04)
 builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
@@ -49,6 +53,7 @@ builder.Services.AddScoped<IPlayerSeasonStatsRepository, PlayerSeasonStatsReposi
 builder.Services.AddScoped<IPlayerOverallHistoryRepository, PlayerOverallHistoryRepository>();
 builder.Services.AddScoped<GetPlayersUseCase>();
 builder.Services.AddScoped<GetPlayerByIdUseCase>();
+builder.Services.AddScoped<GetPlayerOverallHistoryUseCase>();
 builder.Services.AddScoped<CreatePlayerUseCase>();
 builder.Services.AddScoped<UpdatePlayerUseCase>();
 builder.Services.AddScoped<GetPlayerSeasonStatsUseCase>();

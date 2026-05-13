@@ -51,6 +51,7 @@ public interface IPlayerSeasonStatsRepository : IRepository<PlayerSeasonStats>
 public interface IPlayerOverallHistoryRepository : IRepository<PlayerOverallHistory>
 {
     Task<IEnumerable<PlayerOverallHistory>> GetBySeasonIdAsync(Guid seasonId);
+    Task<IEnumerable<PlayerOverallHistory>> GetByPlayerIdAsync(Guid playerId);
     Task AddRangeAsync(IEnumerable<PlayerOverallHistory> entries);
 }
 

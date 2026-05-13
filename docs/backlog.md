@@ -224,7 +224,7 @@
 ---
 
 ## F10 — Dashboards e graficos
-**Status**: todo
+**Status**: done
 **Prioridade**: media
 
 ### Escopo DENTRO
@@ -235,8 +235,9 @@
 - Dashboard da temporada ativa
 
 ### Criterios de aceite
-- [ ] Grafico de evolucao funcional
-- [ ] Ranking em bar chart
-- [ ] Dashboard com 3 KPIs da temporada
-- [ ] Comparacao entre dois jogadores
-- [ ] Tooltips em todos os graficos
+- [x] Grafico de evolucao funcional
+- [x] Ranking em bar chart
+- [x] Dashboard com 3 KPIs da temporada
+- [x] Comparacao entre dois jogadores
+- [x] Tooltips em todos os graficos
+

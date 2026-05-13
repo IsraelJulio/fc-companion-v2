@@ -9,6 +9,7 @@ namespace FcCompanion.API.Controllers;
 public class PlayersController(
     GetPlayersUseCase getPlayers,
     GetPlayerByIdUseCase getById,
+    GetPlayerOverallHistoryUseCase getOverallHistory,
     CreatePlayerUseCase create,
     UpdatePlayerUseCase update,
     GetPlayerSeasonStatsUseCase getStats,
@@ -32,6 +33,13 @@ public class PlayersController(
     public async Task<IActionResult> GetById(Guid saveId, Guid id)
     {
         var result = await getById.ExecuteAsync(id);
+        return result.IsSuccess ? Ok(result.Value) : NotFound(new { error = result.Error });
+    }
+
+    [HttpGet("{id:guid}/overall-history")]
+    public async Task<IActionResult> GetOverallHistory(Guid saveId, Guid id)
+    {
+        var result = await getOverallHistory.ExecuteAsync(saveId, id);
         return result.IsSuccess ? Ok(result.Value) : NotFound(new { error = result.Error });
     }
 

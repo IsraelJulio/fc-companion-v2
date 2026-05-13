@@ -12,6 +12,13 @@ public class PlayerOverallHistoryRepository(AppDbContext context)
             .Where(h => h.SeasonId == seasonId)
             .ToListAsync();
 
+    public async Task<IEnumerable<PlayerOverallHistory>> GetByPlayerIdAsync(Guid playerId)
+        => await _dbSet
+            .Include(h => h.Season)
+            .Where(h => h.PlayerId == playerId)
+            .OrderBy(h => h.Season.StartedAt)
+            .ToListAsync();
+
     public async Task AddRangeAsync(IEnumerable<PlayerOverallHistory> entries)
         => await _dbSet.AddRangeAsync(entries);
 }

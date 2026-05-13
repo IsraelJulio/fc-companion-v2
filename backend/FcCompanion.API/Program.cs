@@ -1,6 +1,7 @@
 using AutoMapper;
 using FcCompanion.Application.Interfaces;
 using FcCompanion.Application.Mappings;
+using FcCompanion.Application.UseCases.Players;
 using FcCompanion.Application.UseCases.Saves;
 using FcCompanion.Application.UseCases.Seasons;
 using FcCompanion.Application.UseCases.Seed;
@@ -28,11 +29,21 @@ builder.Services.AddScoped<DeleteSaveUseCase>();
 builder.Services.AddScoped<ISeasonRepository, SeasonRepository>();
 builder.Services.AddScoped<CloseSeasonUseCase>();
 
+// Players (F04)
+builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
+builder.Services.AddScoped<IPlayerSeasonStatsRepository, PlayerSeasonStatsRepository>();
+builder.Services.AddScoped<GetPlayersUseCase>();
+builder.Services.AddScoped<GetPlayerByIdUseCase>();
+builder.Services.AddScoped<CreatePlayerUseCase>();
+builder.Services.AddScoped<UpdatePlayerUseCase>();
+builder.Services.AddScoped<GetPlayerSeasonStatsUseCase>();
+builder.Services.AddScoped<UpdatePlayerSeasonStatsUseCase>();
+
 // Seed (F03)
 builder.Services.AddHttpClient<IFootballApiService, FootballApiClient>(client =>
 {
     client.BaseAddress = new Uri(builder.Configuration["ApiFootball:BaseUrl"]!);
-    client.DefaultRequestHeaders.Add("x-rapidapi-key", builder.Configuration["ApiFootball:Key"]!);
+    client.DefaultRequestHeaders.Add("x-apisports-key", builder.Configuration["ApiFootball:Key"]!);
 });
 builder.Services.AddScoped<ISeedRepository, SeedRepository>();
 builder.Services.AddScoped<SeedSaveUseCase>();

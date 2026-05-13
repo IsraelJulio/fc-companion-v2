@@ -1,0 +1,10 @@
+.players-page {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.filters-bar {
+  border-bottom: 1px solid var(--surface-border);
+  background: var(--surface-card);
+}

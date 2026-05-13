@@ -38,7 +38,11 @@
       "Bash(rtk tsc *)",
       "Bash(/c/Users/2273129/AppData/Roaming/nvm/v18.20.3/node.exe *)",
       "Bash(node node_modules/@angular/cli/bin/ng.js build --configuration development)",
-      "Bash(\"/c/Program Files/nodejs/node.exe\" \"C:\\\\Users\\\\2273129\\\\source\\\\repos\\\\FootLog\\\\fc-companion-v2\\\\frontend\\\\fc-companion-app\\\\node_modules\\\\@angular\\\\cli\\\\bin\\\\ng.js\" build --configuration development)"
+      "Bash(\"/c/Program Files/nodejs/node.exe\" \"C:\\\\Users\\\\2273129\\\\source\\\\repos\\\\FootLog\\\\fc-companion-v2\\\\frontend\\\\fc-companion-app\\\\node_modules\\\\@angular\\\\cli\\\\bin\\\\ng.js\" build --configuration development)",
+      "Bash(rtk grep *)",
+      "Bash(\"/c/Program Files/dotnet/dotnet.exe\" build FcCompanion.Infrastructure/FcCompanion.Infrastructure.csproj)",
+      "Bash(\"/c/Program Files/dotnet/dotnet.exe\" build FcCompanion.API/FcCompanion.API.csproj --no-incremental)",
+      "Bash(\"/c/Program Files/nodejs/node.exe\" \"/c/Users/2273129/AppData/Roaming/npm/node_modules/@angular/cli/bin/ng.js\" build --configuration development)"
     ],
     "additionalDirectories": [
       "\\tmp\\rtk-extract"

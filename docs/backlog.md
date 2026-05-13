@@ -8,8 +8,8 @@
 |---|---|---|---|
 | F01 | Setup inicial e infraestrutura | done | critica |
 | F02 | Gerenciamento de saves | done | critica |
-| F03 | Seed via API-Football | in-progress | critica |
-| F04 | Modulo de jogadores | todo | alta |
+| F03 | Seed via API-Football | done | critica |
+| F04 | Modulo de jogadores | in-progress | alta |
 | F05 | Modulo de clubes | todo | alta |
 | F06 | Transferencias | todo | alta |
 | F07 | Ligas e classificacao | todo | media |

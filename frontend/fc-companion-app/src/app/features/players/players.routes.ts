@@ -1,2 +1,6 @@
 import { Routes } from '@angular/router';
-export const PLAYERS_ROUTES: Routes = [{ path: '', children: [] }]; // TODO F04
+import { PlayersListComponent } from './components/players-list/players-list.component';
+
+export const PLAYERS_ROUTES: Routes = [
+  { path: '', component: PlayersListComponent }
+];

@@ -13,7 +13,7 @@
 | F05 | Modulo de clubes | done | alta |
 | F06 | Transferencias | done | alta |
 | F07 | Ligas e classificacao | done | media |
-| F08 | Titulos e conquistas | todo | media |
+| F08 | Titulos e conquistas | done | media |
 | F09 | Virada de temporada | todo | alta |
 | F10 | Dashboards e graficos | todo | media |
 
@@ -186,7 +186,7 @@
 ---
 
 ## F08 — Titulos e conquistas
-**Status**: todo
+**Status**: done
 **Prioridade**: media
 
 ### Escopo DENTRO
@@ -195,9 +195,9 @@
 - Contador total por competicao
 
 ### Criterios de aceite
-- [ ] Adicionar titulo para qualquer clube
-- [ ] Diferenciacao visual real/save
-- [ ] Contador por competicao no perfil do clube
+- [x] Adicionar titulo para qualquer clube
+- [x] Diferenciacao visual real/save
+- [x] Contador por competicao no perfil do clube
 
 ---
 

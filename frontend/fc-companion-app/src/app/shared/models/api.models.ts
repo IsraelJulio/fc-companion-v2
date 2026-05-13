@@ -84,6 +84,12 @@ export interface TitleDto {
   seasonName: string | null;
 }
 
+export interface CreateTitleRequest {
+  competition: string;
+  year: number;
+  seasonId: string | null;
+}
+
 export interface StandingDto {
   id: string;
   club: ClubSummaryDto;

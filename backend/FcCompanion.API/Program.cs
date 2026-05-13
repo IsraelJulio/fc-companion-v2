@@ -8,6 +8,7 @@ using FcCompanion.Application.UseCases.Seasons;
 using FcCompanion.Application.UseCases.Seed;
 using FcCompanion.Application.UseCases.Standings;
 using FcCompanion.Application.UseCases.Leagues;
+using FcCompanion.Application.UseCases.Titles;
 using FcCompanion.Application.UseCases.Transfers;
 using FcCompanion.Infrastructure.ExternalApis;
 using FcCompanion.Infrastructure.Persistence;
@@ -55,6 +56,9 @@ builder.Services.AddScoped<UpdatePlayerSeasonStatsUseCase>();
 builder.Services.AddScoped<IClubRepository, ClubRepository>();
 builder.Services.AddScoped<GetClubsUseCase>();
 builder.Services.AddScoped<GetClubDetailUseCase>();
+builder.Services.AddScoped<GetClubTitlesUseCase>();
+builder.Services.AddScoped<CreateTitleUseCase>();
+builder.Services.AddScoped<DeleteTitleUseCase>();
 
 // Transfers (F06)
 builder.Services.AddScoped<ITransferRepository, TransferRepository>();

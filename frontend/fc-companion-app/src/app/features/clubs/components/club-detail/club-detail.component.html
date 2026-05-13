@@ -1,7 +1,6 @@
 <p-toast />
 
 <div class="detail-page p-4">
-
   <p-button
     icon="pi pi-arrow-left"
     label="Voltar"
@@ -16,7 +15,6 @@
     </div>
   } @else {
     @if (club(); as c) {
-
       <div class="surface-card border-round p-4 mb-3 flex gap-4 align-items-center flex-wrap">
         @if (c.logoUrl) {
           <p-avatar [image]="c.logoUrl" size="xlarge" shape="circle" />
@@ -31,8 +29,6 @@
       </div>
 
       <div class="grid">
-
-        <!-- Squad -->
         <div class="col-12 lg:col-7">
           <p-card>
             <ng-template pTemplate="header">
@@ -80,8 +76,6 @@
         </div>
 
         <div class="col-12 lg:col-5 flex flex-column gap-3">
-
-          <!-- Top Scorers -->
           <p-card header="Top 5 Artilheiros Históricos">
             @if (c.topScorers.length === 0) {
               <p class="text-color-secondary text-sm m-0">Sem dados de artilharia.</p>
@@ -103,40 +97,80 @@
             }
           </p-card>
 
-          <!-- Titles -->
-          <p-card header="Títulos">
+          <p-card>
+            <ng-template pTemplate="header">
+              <div class="flex justify-content-between align-items-center px-3 pt-3">
+                <span class="font-semibold text-lg">Títulos</span>
+                <p-button
+                  label="Adicionar título"
+                  icon="pi pi-plus"
+                  size="small"
+                  (onClick)="openTitleDialog()"
+                  aria-label="Adicionar título para este clube" />
+              </div>
+            </ng-template>
             @if (realTitles().length === 0 && saveTitles().length === 0) {
               <p class="text-color-secondary text-sm m-0">Sem títulos registrados.</p>
             } @else {
+              @if (titleCounts().length > 0) {
+                <div class="flex flex-column gap-2 mb-3">
+                  <p class="text-xs font-semibold text-color-secondary mb-0 mt-0 uppercase">Totais por competição</p>
+                  <div class="flex flex-wrap gap-2">
+                    @for (item of titleCounts(); track item.competition) {
+                      <div class="surface-100 border-round px-3 py-2">
+                        <div class="font-medium text-sm">{{ item.competition }}</div>
+                        <div class="text-xs text-color-secondary">
+                          {{ item.count }} total · {{ item.realCount }} real · {{ item.saveCount }} save
+                        </div>
+                      </div>
+                    }
+                  </div>
+                </div>
+              }
+
               @if (realTitles().length > 0) {
                 <p class="text-xs font-semibold text-color-secondary mb-2 mt-0 uppercase">Histórico Real</p>
                 <div class="flex flex-column gap-1 mb-3">
                   @for (title of realTitles(); track title.id) {
-                    <div class="flex justify-content-between text-sm">
-                      <span>🏆 {{ title.competition }}</span>
+                    <div class="flex justify-content-between align-items-center gap-2 text-sm">
+                      <div class="flex align-items-center gap-2">
+                        <span>{{ title.competition }}</span>
+                        <p-tag [value]="title.source" [severity]="sourceSeverity(title.source)" />
+                      </div>
                       <span class="text-color-secondary">{{ title.year }}</span>
                     </div>
                   }
                 </div>
               }
+
               @if (saveTitles().length > 0) {
                 <p-divider styleClass="my-2" />
                 <p class="text-xs font-semibold text-color-secondary mb-2 mt-0 uppercase">No Save</p>
                 <div class="flex flex-column gap-1">
                   @for (title of saveTitles(); track title.id) {
-                    <div class="flex justify-content-between text-sm">
-                      <span>🏆 {{ title.competition }}</span>
-                      <span class="text-color-secondary">{{ title.seasonName ?? title.year }}</span>
+                    <div class="flex justify-content-between align-items-center gap-2 text-sm">
+                      <div class="flex align-items-center gap-2">
+                        <span>{{ title.competition }}</span>
+                        <p-tag [value]="title.source" [severity]="sourceSeverity(title.source)" />
+                      </div>
+                      <div class="flex align-items-center gap-2">
+                        <span class="text-color-secondary">{{ title.seasonName ?? title.year }}</span>
+                        <p-button
+                          icon="pi pi-trash"
+                          severity="danger"
+                          [text]="true"
+                          [rounded]="true"
+                          [loading]="deletingTitleId() === title.id"
+                          (onClick)="removeTitle(title.id)" />
+                      </div>
                     </div>
                   }
                 </div>
               }
             }
           </p-card>
-
         </div>
 
-        <!-- Season History -->
         @if (c.seasonHistory.length > 0) {
           <div class="col-12">
             <p-card header="Histórico de Temporadas">
@@ -159,9 +193,7 @@
             </p-card>
           </div>
         }
-
       </div>
-
     } @else {
       <div class="text-center p-8 text-color-secondary">
         <i class="pi pi-exclamation-circle text-4xl mb-3 block"></i>
@@ -169,7 +201,6 @@
       </div>
     }
   }
-
 </div>
 
 <app-transfer-dialog
@@ -178,3 +209,10 @@
   [prefilledToClubId]="club()?.id ?? null"
   [prefilledToClubName]="club()?.name ?? null"
   (transferred)="onTransferred()" />
+
+<app-title-dialog
+  [visible]="showTitleDialog()"
+  (visibleChange)="showTitleDialog.set($event)"
+  [clubId]="club()?.id ?? null"
+  [clubName]="club()?.name ?? null"
+  (created)="onTitleCreated()" />

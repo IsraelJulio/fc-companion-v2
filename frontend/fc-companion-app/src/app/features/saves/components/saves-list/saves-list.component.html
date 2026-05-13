@@ -8,7 +8,7 @@
     <div class="saves-empty">
       <i class="pi pi-folder-open text-6xl text-400 mb-3"></i>
       <p class="text-xl text-600 m-0">Nenhum save encontrado</p>
-      <p class="text-500 mt-1 mb-4">Crie seu primeiro save para começar!</p>
+      <p class="text-500 mt-1 mb-4">Crie seu primeiro save para comecar.</p>
       <p-button label="Criar Save" icon="pi pi-plus" (onClick)="openDialog()" />
     </div>
   } @else {
@@ -37,6 +37,14 @@
                 styleClass="flex-1"
                 (onClick)="selectSave(save)"
               />
+              @if (save.currentSeason) {
+                <p-button
+                  icon="pi pi-step-forward"
+                  severity="secondary"
+                  [text]="true"
+                  (onClick)="openCloseDialog(save)"
+                />
+              }
               <p-button
                 icon="pi pi-trash"
                 severity="danger"
@@ -88,7 +96,7 @@
   @if (dialogStep() === 1) {
     <div class="dialog-league-step">
       <p class="league-hint text-500 text-sm mt-0 mb-3">
-        Selecione as ligas para importar clubes, jogadores e títulos históricos.
+        Selecione as ligas para importar clubes, jogadores e titulos historicos.
       </p>
       <div class="league-grid">
         @for (league of LEAGUES; track league.id) {
@@ -109,7 +117,7 @@
       @if (selectedLeagueIds().length === 0) {
         <p class="league-warn text-sm mt-2 mb-0">
           <i class="pi pi-info-circle mr-1"></i>
-          Nenhuma liga selecionada — save criado sem dados importados.
+          Nenhuma liga selecionada. O save sera criado sem dados importados.
         </p>
       }
     </div>
@@ -127,7 +135,7 @@
     @if (dialogStep() === 0) {
       <p-button label="Cancelar" [outlined]="true" (onClick)="showDialog.set(false)" />
       <p-button
-        label="Próximo"
+        label="Proximo"
         icon="pi pi-arrow-right"
         iconPos="right"
         [disabled]="!step0Valid()"
@@ -141,6 +149,134 @@
         icon="pi pi-check"
         [loading]="creating()"
         (onClick)="createSave()"
+      />
+    }
+  </ng-template>
+</p-dialog>
+
+<p-dialog
+  [visible]="showCloseDialog()"
+  (visibleChange)="showCloseDialog.set($event)"
+  header="Virada de temporada"
+  [modal]="true"
+  [style]="{ width: '42rem' }"
+  [closable]="!closing()"
+>
+  <p-steps [model]="closeSteps" [readonly]="true" [activeIndex]="closeStep()" styleClass="mb-4" />
+
+  @if (closeStep() === 0) {
+    @if (loadingClosePreview()) {
+      <div class="seed-progress">
+        <p class="text-600 mb-3">Carregando preview da virada...</p>
+        <p-progressBar mode="indeterminate" />
+      </div>
+    } @else if (closePreview(); as preview) {
+      <div class="dialog-form">
+        <div class="field">
+          <label for="nextSeasonName">Nome da proxima temporada</label>
+          <input
+            id="nextSeasonName"
+            pInputText
+            [ngModel]="nextSeasonName()"
+            (ngModelChange)="nextSeasonName.set($event)"
+            placeholder="Ex: 2026/27"
+          />
+        </div>
+      </div>
+
+      <div class="close-preview-grid">
+        <div class="preview-card">
+          <span class="preview-label">Temporada atual</span>
+          <strong>{{ preview.currentSeasonName }}</strong>
+        </div>
+        <div class="preview-card">
+          <span class="preview-label">Snapshots de overall</span>
+          <strong>{{ preview.overallSnapshotsToSave }}</strong>
+        </div>
+        <div class="preview-card">
+          <span class="preview-label">Stats zeradas</span>
+          <strong>{{ preview.seasonStatsToReset }}</strong>
+        </div>
+        <div class="preview-card">
+          <span class="preview-label">Classificacoes arquivadas</span>
+          <strong>{{ preview.standingsCount }}</strong>
+        </div>
+      </div>
+
+      <div class="close-lists">
+        <div class="close-list-card">
+          <h3>Será preservado</h3>
+          <ul>
+            <li>{{ preview.playersCount }} jogadores</li>
+            <li>{{ preview.clubsCount }} clubes</li>
+            <li>{{ preview.titlesCount }} titulos</li>
+            <li>{{ preview.transfersCount }} transferencias</li>
+          </ul>
+        </div>
+        <div class="close-list-card">
+          <h3>Será reiniciado</h3>
+          <ul>
+            <li>Stats da nova temporada começam zeradas</li>
+            <li>A temporada atual ficará com status closed</li>
+            <li>O header passará a mostrar a nova season ativa</li>
+          </ul>
+        </div>
+      </div>
+    }
+  }
+
+  @if (closeStep() === 1) {
+    <div class="close-confirm">
+      <p class="m-0">
+        Você está prestes a encerrar <strong>{{ closePreview()?.currentSeasonName }}</strong>
+        e iniciar <strong>{{ nextSeasonName() }}</strong>.
+      </p>
+      <div class="confirm-box">
+        <div class="confirm-item">
+          <i class="pi pi-check-circle text-green-500"></i>
+          <span>Snapshot de overall salvo para os jogadores atuais</span>
+        </div>
+        <div class="confirm-item">
+          <i class="pi pi-check-circle text-green-500"></i>
+          <span>Nova temporada criada como ativa</span>
+        </div>
+        <div class="confirm-item">
+          <i class="pi pi-refresh text-blue-500"></i>
+          <span>PlayerSeasonStats recriadas zeradas para a nova season</span>
+        </div>
+      </div>
+      <p class="text-color-secondary text-sm mb-0">
+        Essa ação muda permanentemente a temporada ativa do save.
+      </p>
+    </div>
+  }
+
+  @if (closeStep() === 2) {
+    <div class="seed-progress">
+      <p class="text-600 mb-3">Encerrando temporada e preparando a nova season...</p>
+      <p-progressBar mode="indeterminate" />
+      <p class="text-400 text-sm mt-3 mb-0">O header será atualizado automaticamente ao concluir.</p>
+    </div>
+  }
+
+  <ng-template pTemplate="footer">
+    @if (closeStep() === 0) {
+      <p-button label="Cancelar" [outlined]="true" (onClick)="showCloseDialog.set(false)" />
+      <p-button
+        label="Proximo"
+        icon="pi pi-arrow-right"
+        iconPos="right"
+        [disabled]="!closeStepValid() || loadingClosePreview()"
+        (onClick)="nextCloseStep()"
+      />
+    }
+    @if (closeStep() === 1) {
+      <p-button label="Voltar" icon="pi pi-arrow-left" [outlined]="true" (onClick)="prevCloseStep()" />
+      <p-button
+        label="Virar temporada"
+        icon="pi pi-step-forward"
+        [loading]="closing()"
+        (onClick)="executeCloseSeason()"
       />
     }
   </ng-template>

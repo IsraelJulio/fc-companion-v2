@@ -35,6 +35,7 @@ builder.Services.AddScoped<ISeasonRepository, SeasonRepository>();
 builder.Services.AddScoped<IStandingRepository, StandingRepository>();
 builder.Services.AddScoped<ITitleRepository, TitleRepository>();
 builder.Services.AddScoped<GetSeasonsUseCase>();
+builder.Services.AddScoped<GetCloseSeasonPreviewUseCase>();
 builder.Services.AddScoped<CloseSeasonUseCase>();
 builder.Services.AddScoped<GetStandingsUseCase>();
 builder.Services.AddScoped<UpdateStandingUseCase>();
@@ -45,6 +46,7 @@ builder.Services.AddScoped<GetChampionsHistoryUseCase>();
 // Players (F04)
 builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
 builder.Services.AddScoped<IPlayerSeasonStatsRepository, PlayerSeasonStatsRepository>();
+builder.Services.AddScoped<IPlayerOverallHistoryRepository, PlayerOverallHistoryRepository>();
 builder.Services.AddScoped<GetPlayersUseCase>();
 builder.Services.AddScoped<GetPlayerByIdUseCase>();
 builder.Services.AddScoped<CreatePlayerUseCase>();

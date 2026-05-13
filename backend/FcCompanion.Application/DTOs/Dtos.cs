@@ -60,6 +60,15 @@ public record SeedResultDto(int ClubsImported, int PlayersImported, int TitlesIm
 
 public record CloseSeasonRequest(string NextSeasonName);
 public record CloseSeasonResponse(SeasonDto ClosedSeason, SeasonDto NewSeason);
+public record CloseSeasonPreviewDto(
+    string CurrentSeasonName,
+    int PlayersCount,
+    int ClubsCount,
+    int TitlesCount,
+    int TransfersCount,
+    int StandingsCount,
+    int SeasonStatsToReset,
+    int OverallSnapshotsToSave);
 
 public record DashboardSummaryDto(
     PlayerListItemDto? TopScorer, PlayerListItemDto? TopAssister,

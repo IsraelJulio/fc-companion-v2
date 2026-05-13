@@ -170,3 +170,72 @@
     width: 100%;
   }
 }
+
+.close-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.preview-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 1rem;
+  border-radius: 0.85rem;
+  border: 1px solid var(--surface-border);
+  background: var(--surface-card);
+}
+
+.preview-label {
+  font-size: 0.8rem;
+  color: var(--text-color-secondary);
+}
+
+.close-lists {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.close-list-card,
+.confirm-box {
+  border: 1px solid var(--surface-border);
+  border-radius: 0.85rem;
+  padding: 1rem;
+  background: var(--surface-card);
+}
+
+.close-list-card h3 {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+}
+
+.close-list-card ul {
+  margin: 0;
+  padding-left: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.close-confirm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.confirm-item {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+@media (max-width: 720px) {
+  .league-grid,
+  .close-preview-grid,
+  .close-lists {
+    grid-template-columns: 1fr;
+  }
+}

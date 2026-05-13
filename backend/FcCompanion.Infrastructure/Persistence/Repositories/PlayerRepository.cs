@@ -6,6 +6,13 @@ namespace FcCompanion.Infrastructure.Persistence.Repositories;
 
 public class PlayerRepository(AppDbContext context) : Repository<Player>(context), IPlayerRepository
 {
+    public async Task<IEnumerable<Player>> GetBySaveIdAsync(Guid saveId)
+        => await _context.Players
+            .Where(p => p.SaveId == saveId)
+            .OrderBy(p => p.LastName)
+            .ThenBy(p => p.FirstName)
+            .ToListAsync();
+
     public async Task<(IEnumerable<Player> Items, int Total)> GetPagedBySaveIdAsync(
         Guid saveId, string? search, string? position, Guid? clubId, string? league, int page, int pageSize)
     {

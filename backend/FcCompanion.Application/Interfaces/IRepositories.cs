@@ -32,6 +32,7 @@ public interface IClubRepository : IRepository<Club>
 
 public interface IPlayerRepository : IRepository<Player>
 {
+    Task<IEnumerable<Player>> GetBySaveIdAsync(Guid saveId);
     Task<(IEnumerable<Player> Items, int Total)> GetPagedBySaveIdAsync(
         Guid saveId, string? search, string? position, Guid? clubId, string? league, int page, int pageSize);
     Task<Player?> GetWithDetailsAsync(Guid playerId);
@@ -41,8 +42,16 @@ public interface IPlayerSeasonStatsRepository : IRepository<PlayerSeasonStats>
 {
     Task<PlayerSeasonStats?> GetByPlayerAndSeasonAsync(Guid playerId, Guid seasonId);
     Task<IEnumerable<PlayerSeasonStats>> GetByPlayerIdAsync(Guid playerId);
+    Task<IEnumerable<PlayerSeasonStats>> GetBySeasonIdAsync(Guid seasonId);
+    Task AddRangeAsync(IEnumerable<PlayerSeasonStats> entries);
     Task<IEnumerable<PlayerSeasonStats>> GetTopScorersBySeasonAndLeagueAsync(Guid seasonId, string? league, int limit);
     Task<IEnumerable<PlayerSeasonStats>> GetTopAssistsBySeasonAndLeagueAsync(Guid seasonId, string? league, int limit);
+}
+
+public interface IPlayerOverallHistoryRepository : IRepository<PlayerOverallHistory>
+{
+    Task<IEnumerable<PlayerOverallHistory>> GetBySeasonIdAsync(Guid seasonId);
+    Task AddRangeAsync(IEnumerable<PlayerOverallHistory> entries);
 }
 
 public interface ITransferRepository : IRepository<Transfer>

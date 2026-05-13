@@ -144,6 +144,17 @@ export interface CloseSeasonRequest {
   nextSeasonName: string;
 }
 
+export interface CloseSeasonPreviewDto {
+  currentSeasonName: string;
+  playersCount: number;
+  clubsCount: number;
+  titlesCount: number;
+  transfersCount: number;
+  standingsCount: number;
+  seasonStatsToReset: number;
+  overallSnapshotsToSave: number;
+}
+
 export interface CloseSeasonResponse {
   closedSeason: SeasonDto;
   newSeason: SeasonDto;

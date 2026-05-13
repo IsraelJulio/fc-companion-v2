@@ -54,6 +54,7 @@ POST   /saves/{saveId}/clubs/{clubId}/titles   body: { competition, year, season
 DELETE /saves/{saveId}/clubs/{clubId}/titles/{id}
 
 ## Seasons (F09)
+GET  /saves/{saveId}/seasons/close-preview
 POST /saves/{saveId}/seasons/close   body: { nextSeasonName }
 
 ## Dashboard (F10)

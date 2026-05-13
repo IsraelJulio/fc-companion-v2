@@ -14,7 +14,7 @@
 | F06 | Transferencias | done | alta |
 | F07 | Ligas e classificacao | done | media |
 | F08 | Titulos e conquistas | done | media |
-| F09 | Virada de temporada | todo | alta |
+| F09 | Virada de temporada | done | alta |
 | F10 | Dashboards e graficos | todo | media |
 
 ---
@@ -202,7 +202,7 @@
 ---
 
 ## F09 — Virada de temporada
-**Status**: todo
+**Status**: done
 **Prioridade**: alta
 
 ### Escopo DENTRO
@@ -214,12 +214,12 @@
 - Snapshot de overall ao encerrar
 
 ### Criterios de aceite
-- [ ] Fluxo em etapas com preview claro
-- [ ] Temporada anterior fica closed
-- [ ] Nova temporada criada active
-- [ ] Overall snapshot salvo
-- [ ] Stats zeradas na nova temporada
-- [ ] Header atualizado
+- [x] Fluxo em etapas com preview claro
+- [x] Temporada anterior fica closed
+- [x] Nova temporada criada active
+- [x] Overall snapshot salvo
+- [x] Stats zeradas na nova temporada
+- [x] Header atualizado
 
 ---
 

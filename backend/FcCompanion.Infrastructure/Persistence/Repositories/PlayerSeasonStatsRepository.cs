@@ -20,6 +20,14 @@ public class PlayerSeasonStatsRepository(AppDbContext context) : Repository<Play
             .OrderByDescending(s => s.Season.StartedAt)
             .ToListAsync();
 
+    public async Task<IEnumerable<PlayerSeasonStats>> GetBySeasonIdAsync(Guid seasonId)
+        => await _dbSet
+            .Where(s => s.SeasonId == seasonId)
+            .ToListAsync();
+
+    public async Task AddRangeAsync(IEnumerable<PlayerSeasonStats> entries)
+        => await _dbSet.AddRangeAsync(entries);
+
     public async Task<IEnumerable<PlayerSeasonStats>> GetTopScorersBySeasonAndLeagueAsync(Guid seasonId, string? league, int limit)
     {
         var query = _dbSet
